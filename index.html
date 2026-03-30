@@ -177,7 +177,7 @@ async function loadTournaments() {
       const dateOff = c.co_data_off || c.date_end || '';
       const city = c.co_city || c.location || '';
       const dateStr = dateOn && dateOff ? `${dateOn} — ${dateOff}` : (dateOn || dateOff);
-      return `<div class="card" onclick="openTournament(${id}, ${JSON.stringify(name)})">
+      return `<div class="card" onclick="openTournament(${id}, this.dataset.name)" data-name="${escHtml(name)}">
         <div class="card-title">${escHtml(name)}</div>
         ${city ? `<div class="card-meta">📍 ${escHtml(city)}</div>` : ''}
         ${dateStr ? `<div class="comp-date">📅 ${escHtml(dateStr)}</div>` : ''}
@@ -188,10 +188,10 @@ async function loadTournaments() {
   }
 }
 
-function openTournament(id, name) {
+function openTournament(id, nameOrEl) {
   state.compId = id;
-  state.compName = name;
-  navigate('s2', name);
+  state.compName = typeof nameOrEl === 'string' ? nameOrEl : nameOrEl;
+  navigate('s2', state.compName);
   loadCategories(id);
 }
 
