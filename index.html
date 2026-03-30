@@ -517,14 +517,15 @@ async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
   try {
-    const data = await apiFetch('/competitions/');
-    const list = Array.isArray(data) ? data : (data.results || data.data || []);
+    const data = await apiFetch('/api/competitions/');
+    const list = Array.isArray(data) ? data : (data.data || data.results || []);
     if (!list.length) { el.innerHTML = emptyBox('Турниры не найдены'); return; }
     el.innerHTML = '<div class="card-list">' + list.map(c => {
-      const name = c.name || c.title || `Турнир #${c.id}`;
-      const date = c.date_start || c.date || '';
-      const loc = c.location || c.city || '';
-      return `<div class="card" onclick="openTournament(${c.id}, ${JSON.stringify(name).replace(/'/g,"\\'")})">`
+      const name = c.co_name || c.name || c.title || `Турнир #${c.co_id || c.id}`;
+      const date = c.co_data_on || c.date_start || '';
+      const loc = c.co_city || c.location || '';
+      const id = c.co_id || c.id;
+      return `<div class="card" onclick="openTournament(${id}, ${JSON.stringify(name)})">`
         + `<div class="card-title">${escHtml(name)}</div>`
         + (loc ? `<div class="card-meta">📍 ${escHtml(loc)}</div>` : '')
         + (date ? `<div class="comp-date">📅 ${escHtml(date)}</div>` : '')
