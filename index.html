@@ -291,52 +291,33 @@ async function loadAthletes() {
 }
 
 // ── SCREEN 5: Fights ──
-async function loadFights() {
-  const el = document.getElementById('s5-content');
-  document.getElementById('s5-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
+async function loadAthletes() {
+  const el = document.getElementById('s4-content');
+  document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   try {
-    const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/hod`);
-    const list = Array.isArray(resp) ? resp : (resp.data || resp.fights || resp.results || []);
-    if (!list.length) { el.innerHTML = emptyBox('Встречи не найдены или ещё не начались'); return; }
-
-    let html = '';
-    list.forEach((f, i) => {
-      const round = f.round || f.tur || f.stage || f.ho_round || f.ho_tur || '';
-      const num = f.ho_num || f.number || (i + 1);
-      const score = f.score || f.ho_score || f.result || f.ho_result || '';
-      const winner = f.winner || f.ho_winner || null;
-
-      const a1 = extractAthlete(f, ['red', 'athlete1', 'athlete_1', 'ho_red', 'sportsman1', 'ho_athlete1']);
-      const a2 = extractAthlete(f, ['blue', 'athlete2', 'athlete_2', 'ho_blue', 'sportsman2', 'ho_athlete2']);
-
-      const a1wins = winner == 1 || winner === 'red' || winner === '1';
-      const a2wins = winner == 2 || winner === 'blue' || winner === '2';
-
-      html += `<div class="fight-card">
-        <div class="fight-meta">
-          ${round ? `<span>🏁 ${escHtml(String(round))}</span>` : ''}
-          <span>Бой #${num}</span>
-          ${score ? `<span>${escHtml(String(score))}</span>` : ''}
-        </div>
-        <div class="fighters">
-          <div class="fighter left">
-            ${escHtml(a1.name)}
-            <div class="fight-club">${escHtml(a1.club)}</div>
-            ${a1wins ? '<div class="winner-tag">🏆 Победитель</div>' : ''}
-          </div>
-          <div class="vs-badge">VS</div>
-          <div class="fighter right">
-            ${escHtml(a2.name)}
-            <div class="fight-club">${escHtml(a2.club)}</div>
-            ${a2wins ? '<div class="winner-tag">🏆 Победитель</div>' : ''}
-          </div>
-        </div>
-      </div>`;
+    const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/athletes`);
+    const list = resp.data?.athletes || resp.data || resp.athletes || [];
+    if (!list.length) { el.innerHTML = emptyBox('Участники не найдены'); return; }
+    let html = '<div class="table-wrap"><table><thead><tr><th>#</th><th>Спортсмен</th><th>Регион</th><th>Разряд</th></tr></thead><tbody>';
+    list.forEach((a, i) => {
+      const place = a.za_place || (i + 1);
+      const placeNum = parseInt(place);
+      const pClass = placeNum === 1 ? 'place-1' : placeNum === 2 ? 'place-2' : placeNum === 3 ? 'place-3' : 'place-other';
+      const placeLabel = placeNum >= 500 ? '—' : placeNum;
+      const name = a.us_fio || [a.us_family, a.us_name, a.us_otch].filter(Boolean).join(' ') || '—';
+      const region = a.us_region_x || '—';
+      const razryad = a.us_razryad_x || '—';
+      html += `<tr>
+        <td><span class="place-badge ${pClass}">${placeLabel}</span></td>
+        <td>${escHtml(name)}</td>
+        <td style="color:var(--muted);font-size:12px">${escHtml(region)}</td>
+        <td style="color:var(--muted)">${escHtml(razryad)}</td>
+      </tr>`;
     });
-    el.innerHTML = html;
+    el.innerHTML = html + '</tbody></table></div>';
   } catch(e) {
-    el.innerHTML = errBox('Не удалось загрузить встречи.<br>' + e.message);
+    el.innerHTML = errBox('Не удалось загрузить участников.<br>' + e.message);
   }
 }
 
