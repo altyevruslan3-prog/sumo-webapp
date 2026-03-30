@@ -291,6 +291,299 @@ async function loadAthletes() {
 }
 
 // ── SCREEN 5: Fights ──
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Sumo Sport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0e0e12; --card: #18181f; --card2: #1f1f28; --border: #2a2a36;
+    --text: #e8e8f0; --muted: #7a7a96; --blue: #3d8ef0; --blue-soft: #1a2e4a;
+    --pink: #e0558a; --pink-soft: #3a1828; --accent: #f5c842; --radius: 14px; --header-h: 56px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Noto Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; overflow-x: hidden; }
+  header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: rgba(14,14,18,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 12px; z-index: 100; }
+  #back-btn { display: none; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--card2); color: var(--text); font-size: 20px; cursor: pointer; flex-shrink: 0; }
+  #back-btn.visible { display: flex; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; color: var(--accent); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .screens { margin-top: var(--header-h); }
+  .screen { display: none; min-height: calc(100dvh - var(--header-h)); padding: 16px; animation: fadeIn .22s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .loader-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 60px 0; }
+  .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { color: var(--muted); font-size: 14px; }
+  .error-box, .empty-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 20px; text-align: center; margin-top: 24px; }
+  .error-box { border-color: #7a2020; }
+  .error-box .ico, .empty-box .ico { font-size: 36px; margin-bottom: 10px; }
+  .error-box p { color: #e07070; font-size: 14px; line-height: 1.6; }
+  .empty-box p { color: var(--muted); font-size: 14px; }
+  .screen-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .card-list { display: flex; flex-direction: column; gap: 10px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: background .15s, transform .1s; }
+  .card:active { transform: scale(.98); background: var(--card2); }
+  .card-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .card-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .comp-date { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; background: rgba(245,200,66,.08); color: var(--accent); border-radius: 20px; padding: 3px 10px; margin-top: 6px; font-weight: 600; }
+  .gender-section { margin-bottom: 20px; }
+  .gender-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius) var(--radius) 0 0; font-weight: 700; font-size: 13px; }
+  .gender-header.male { background: var(--blue-soft); color: var(--blue); border: 1px solid rgba(61,142,240,.25); border-bottom: none; }
+  .gender-header.female { background: var(--pink-soft); color: var(--pink); border: 1px solid rgba(224,85,138,.25); border-bottom: none; }
+  .gender-header.unknown { background: var(--card2); color: var(--muted); border: 1px solid var(--border); border-bottom: none; }
+  .gender-cards { border: 1px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+  .gender-cards .card { border-radius: 0; border: none; border-bottom: 1px solid var(--border); }
+  .gender-cards .card:last-child { border-bottom: none; }
+  .cat-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; margin-top: 6px; }
+  .cat-badge.male { background: var(--blue-soft); color: var(--blue); }
+  .cat-badge.female { background: var(--pink-soft); color: var(--pink); }
+  .action-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+  .action-btn { display: flex; align-items: center; gap: 14px; padding: 20px 18px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); cursor: pointer; font-size: 16px; font-weight: 700; color: var(--text); transition: background .15s, transform .1s; width: 100%; text-align: left; }
+  .action-btn:active { transform: scale(.97); }
+  .action-btn .ico { font-size: 28px; }
+  .action-btn.athletes { border-color: rgba(61,142,240,.35); }
+  .action-btn.athletes:active { background: var(--blue-soft); }
+  .action-btn.fights { border-color: rgba(245,200,66,.25); }
+  .action-btn.fights:active { background: #2a240a; }
+  .action-sub { font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+  .table-wrap { overflow-x: auto; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--card2); color: var(--muted); text-align: left; padding: 10px; font-weight: 600; font-size: 11px; letter-spacing: .5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 11px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(255,255,255,.015); }
+  .place-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; font-weight: 700; font-size: 12px; }
+  .place-1 { background: #f5c842; color: #0e0e12; }
+  .place-2 { background: #aab4bf; color: #0e0e12; }
+  .place-3 { background: #c87941; color: #0e0e12; }
+  .place-other { background: var(--card2); color: var(--muted); }
+  .fight-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
+  .fight-meta { font-size: 11px; color: var(--muted); margin-bottom: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .fighters { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+  .fighter { font-size: 14px; font-weight: 700; line-height: 1.3; }
+  .fighter.left { text-align: left; }
+  .fighter.right { text-align: right; }
+  .vs-badge { background: var(--card2); border-radius: 6px; padding: 4px 8px; font-size: 11px; font-weight: 700; color: var(--muted); }
+  .winner-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; color: var(--accent); margin-top: 4px; background: rgba(245,200,66,.1); padding: 2px 7px; border-radius: 20px; }
+  .fight-club { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+  .breadcrumb span { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="back-btn" aria-label="Назад">←</button>
+  <div class="header-title" id="header-title">🥋 SUMO SPORT</div>
+</header>
+
+<div class="screens">
+  <div class="screen active" id="s1">
+    <div class="screen-label">Турниры</div>
+    <div id="s1-content"><div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка…</div></div></div>
+  </div>
+  <div class="screen" id="s2">
+    <div id="s2-breadcrumb" class="breadcrumb"></div>
+    <div class="screen-label">Категории</div>
+    <div id="s2-content"></div>
+  </div>
+  <div class="screen" id="s3">
+    <div id="s3-breadcrumb" class="breadcrumb"></div>
+    <div class="screen-label">Что смотрим?</div>
+    <div class="action-grid">
+      <button class="action-btn athletes" onclick="goAthletes()">
+        <span class="ico">👥</span>
+        <div><div>Списки участников</div><div class="action-sub">Все спортсмены категории</div></div>
+      </button>
+      <button class="action-btn fights" onclick="goFights()">
+        <span class="ico">⚔️</span>
+        <div><div>Ход встреч</div><div class="action-sub">Результаты поединков</div></div>
+      </button>
+    </div>
+  </div>
+  <div class="screen" id="s4">
+    <div id="s4-breadcrumb" class="breadcrumb"></div>
+    <div class="screen-label">Участники</div>
+    <div id="s4-content"></div>
+  </div>
+  <div class="screen" id="s5">
+    <div id="s5-breadcrumb" class="breadcrumb"></div>
+    <div class="screen-label">Ход встреч</div>
+    <div id="s5-content"></div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const state = { history: [], compId: null, compName: null, catId: null, catName: null };
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function setTitle(t) { document.getElementById('header-title').textContent = t; }
+function navigate(screenId, title) {
+  state.history.push(document.querySelector('.screen.active').id);
+  setTitle(title || '🥋 SUMO SPORT');
+  showScreen(screenId);
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('back-btn').classList.toggle('visible', state.history.length > 0);
+}
+document.getElementById('back-btn').onclick = () => {
+  if (!state.history.length) return;
+  const prev = state.history.pop();
+  document.getElementById('back-btn').classList.toggle('visible', state.history.length > 0);
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(prev).classList.add('active');
+  const titles = { s1: '🥋 SUMO SPORT', s2: state.compName, s3: state.catName };
+  if (titles[prev]) setTitle(titles[prev]);
+};
+
+async function apiFetch(path) {
+  const r = await fetch(API + path);
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+function errBox(msg) { return `<div class="error-box"><div class="ico">⚠️</div><p>${msg}</p></div>`; }
+function emptyBox(msg) { return `<div class="empty-box"><div class="ico">🔍</div><p>${msg}</p></div>`; }
+
+// ── SCREEN 1: Tournaments ──
+async function loadTournaments() {
+  const el = document.getElementById('s1-content');
+  el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
+  try {
+    const resp = await apiFetch('/api/competitions');
+    // { success, data: [...] }
+    const list = Array.isArray(resp) ? resp : (resp.data || resp.results || []);
+    if (!list.length) { el.innerHTML = emptyBox('Турниры не найдены'); return; }
+    el.innerHTML = '<div class="card-list">' + list.map(c => {
+      const id = c.co_id || c.id;
+      const name = c.co_name || c.name || `Турнир #${id}`;
+      const dateOn = c.co_data_on || c.date_start || '';
+      const dateOff = c.co_data_off || c.date_end || '';
+      const city = c.co_city || c.location || '';
+      const dateStr = dateOn && dateOff ? `${dateOn} — ${dateOff}` : (dateOn || dateOff);
+      return `<div class="card" onclick="openTournament(${id}, this.dataset.name)" data-name="${escHtml(name)}">
+        <div class="card-title">${escHtml(name)}</div>
+        ${city ? `<div class="card-meta">📍 ${escHtml(city)}</div>` : ''}
+        ${dateStr ? `<div class="comp-date">📅 ${escHtml(dateStr)}</div>` : ''}
+      </div>`;
+    }).join('') + '</div>';
+  } catch(e) {
+    el.innerHTML = errBox('Не удалось загрузить турниры.<br>' + e.message);
+  }
+}
+
+function openTournament(id, nameOrEl) {
+  state.compId = id;
+  state.compName = typeof nameOrEl === 'string' ? nameOrEl : nameOrEl;
+  navigate('s2', state.compName);
+  loadCategories(id);
+}
+
+// ── SCREEN 2: Categories ──
+// API: data.weight_categories = { "Девушки": { "2327": {w_id, w_weight, w_sex}, ... }, "Юноши": {...} }
+// w_sex: "6" = female (Девушки), "2" = male (Юноши)
+
+async function loadCategories(compId) {
+  const el = document.getElementById('s2-content');
+  document.getElementById('s2-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span>`;
+  el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
+  try {
+    const resp = await apiFetch(`/api/competitions/${compId}`);
+    const weightCats = resp.data?.weight_categories || {};
+
+    const males = [];
+    const females = [];
+
+    // weightCats is { "Девушки": { id: {...}, ... }, "Юноши": { id: {...}, ... } }
+    for (const [groupName, cats] of Object.entries(weightCats)) {
+      const isFemale = groupName.toLowerCase().includes('дев') || groupName.toLowerCase().includes('жен') || groupName.toLowerCase().includes('women') || groupName.toLowerCase().includes('girl');
+      for (const [catId, cat] of Object.entries(cats)) {
+        const entry = { id: catId, weight: cat.w_weight || catId, sex: cat.w_sex, group: groupName };
+        if (isFemale || cat.w_sex === '6') females.push(entry);
+        else males.push(entry);
+      }
+    }
+
+    if (!males.length && !females.length) { el.innerHTML = emptyBox('Категории не найдены'); return; }
+
+    let html = '';
+    if (females.length) html += renderCatSection(females, 'female', '♀ Девушки / Женщины');
+    if (males.length) html += renderCatSection(males, 'male', '♂ Юноши / Мужчины');
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = errBox('Не удалось загрузить категории.<br>' + e.message);
+  }
+}
+
+function renderCatSection(cats, gender, label) {
+  let html = `<div class="gender-section">
+    <div class="gender-header ${gender}">${label}</div>
+    <div class="gender-cards">`;
+  cats.forEach(c => {
+    const name = c.weight === 'Абсолютная' ? '🏅 Абсолютная' : `До ${c.weight} кг`;
+    html += `<div class="card" onclick="openCategory(${c.id}, this.dataset.name)" data-name="${escHtml(name)}">
+      <div class="card-title">${escHtml(name)}</div>
+      <div class="cat-badge ${gender}">⚖️ ${escHtml(String(c.weight))}</div>
+    </div>`;
+  });
+  return html + '</div></div>';
+}
+
+function openCategory(id, name) {
+  state.catId = id;
+  state.catName = name;
+  navigate('s3', name);
+  document.getElementById('s3-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(name)}`;
+}
+
+// ── SCREEN 3 ──
+function goAthletes() { navigate('s4', 'Участники'); loadAthletes(); }
+function goFights() { navigate('s5', 'Ход встреч'); loadFights(); }
+
+// ── SCREEN 4: Athletes ──
+async function loadAthletes() {
+  const el = document.getElementById('s4-content');
+  document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
+  el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
+  try {
+    const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/athletes`);
+    const list = Array.isArray(resp) ? resp : (resp.data || resp.athletes || resp.results || []);
+    if (!list.length) { el.innerHTML = emptyBox('Участники не найдены'); return; }
+
+    let html = '<div class="table-wrap"><table><thead><tr><th>#</th><th>Спортсмен</th><th>Регион</th><th>Вес</th></tr></thead><tbody>';
+    list.forEach((a, i) => {
+      const place = a.place || a.at_place || a.ho_place || (i + 1);
+      const pClass = place == 1 ? 'place-1' : place == 2 ? 'place-2' : place == 3 ? 'place-3' : 'place-other';
+      const fname = a.at_fname || a.first_name || a.fname || '';
+      const lname = a.at_lname || a.last_name || a.lname || '';
+      const mname = a.at_mname || a.middle_name || a.mname || '';
+      const name = [lname, fname, mname].filter(Boolean).join(' ') || a.name || a.at_name || `Спортсмен ${i+1}`;
+      const region = a.at_region || a.region || a.club || a.at_city || '—';
+      const w = a.at_weight || a.weight;
+      const weight = w ? w + ' кг' : '—';
+      html += `<tr>
+        <td><span class="place-badge ${pClass}">${place}</span></td>
+        <td>${escHtml(name)}</td>
+        <td style="color:var(--muted);font-size:12px">${escHtml(String(region))}</td>
+        <td style="color:var(--muted)">${escHtml(weight)}</td>
+      </tr>`;
+    });
+    el.innerHTML = html + '</tbody></table></div>';
+  } catch(e) {
+    el.innerHTML = errBox('Не удалось загрузить участников.<br>' + e.message);
+  }
+}
+
+// ── SCREEN 5: Fights ──
 async function loadAthletes() {
   const el = document.getElementById('s4-content');
   document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -320,6 +613,29 @@ async function loadAthletes() {
     el.innerHTML = errBox('Не удалось загрузить участников.<br>' + e.message);
   }
 }
+
+function extractAthlete(f, keys) {
+  for (const k of keys) {
+    const o = f[k];
+    if (!o) continue;
+    if (typeof o === 'object') {
+      const fname = o.at_fname || o.first_name || o.fname || '';
+      const lname = o.at_lname || o.last_name || o.lname || '';
+      const name = [lname, fname].filter(Boolean).join(' ') || o.name || o.at_name || '—';
+      const club = o.at_region || o.region || o.club || o.at_city || '';
+      return { name, club };
+    }
+    if (typeof o === 'string' && o.trim()) return { name: o, club: '' };
+  }
+  return { name: '—', club: '' };
+}
+
+if (window.Telegram?.WebApp) { window.Telegram.WebApp.ready(); window.Telegram.WebApp.expand(); }
+loadTournaments();
+</script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</body>
+</html>
 
 function extractAthlete(f, keys) {
   for (const k of keys) {
