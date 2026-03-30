@@ -442,7 +442,7 @@ const state = {
   catGender: null,
 };
 
-const API = 'https://api.bsupport.ru';
+const API = '';
 
 // ── NAVIGATION ──
 function setTitle(t) { document.getElementById('header-title').textContent = t; }
@@ -517,7 +517,7 @@ async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
   try {
-    const data = await apiFetch('/competitions/');
+    const data = await apiFetch('/api/competitions/');
     const list = Array.isArray(data) ? data : (data.results || data.data || []);
     if (!list.length) { el.innerHTML = emptyBox('Турниры не найдены'); return; }
     el.innerHTML = '<div class="card-list">' + list.map(c => {
@@ -549,7 +549,7 @@ async function loadCategories(compId) {
   bc.innerHTML = `🏆 <span>${escHtml(state.compName)}</span>`;
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   try {
-    const data = await apiFetch(`/competitions/${compId}/`);
+    const data = await apiFetch(`/api/competitions/${compId}/`);
     // categories may be in different fields
     const cats = data.categories || data.category_set || data.groups || [];
     if (!cats.length) { el.innerHTML = emptyBox('Категории не найдены'); return; }
@@ -617,7 +617,7 @@ async function loadAthletes() {
   bc.innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   try {
-    const data = await apiFetch(`/competitions/${state.compId}/categories/${state.catId}/athletes`);
+    const data = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/athletes`);
     const list = Array.isArray(data) ? data : (data.results || data.athletes || []);
     if (!list.length) { el.innerHTML = emptyBox('Участники не найдены'); return; }
 
@@ -652,7 +652,7 @@ async function loadFights() {
   bc.innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   try {
-    const data = await apiFetch(`/competitions/${state.compId}/categories/${state.catId}/hod`);
+    const data = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/hod`);
     const list = Array.isArray(data) ? data : (data.results || data.fights || data.hod || []);
     if (!list.length) { el.innerHTML = emptyBox('Встречи не найдены или ещё не начались'); return; }
 
