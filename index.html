@@ -161,12 +161,13 @@ async function apiFetch(path) {
 function errBox(msg) { return `<div class="error-box"><div class="ico">⚠️</div><p>${msg}</p></div>`; }
 function emptyBox(msg) { return `<div class="empty-box"><div class="ico">🔍</div><p>${msg}</p></div>`; }
 
-// ── SCREEN 1 ──
+// ── SCREEN 1: Tournaments ──
 async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
   try {
     const resp = await apiFetch('/api/competitions');
+    // { success, data: [...] }
     const list = Array.isArray(resp) ? resp : (resp.data || resp.results || []);
     if (!list.length) { el.innerHTML = emptyBox('Турниры не найдены'); return; }
     el.innerHTML = '<div class="card-list">' + list.map(c => {
@@ -194,21 +195,9 @@ function openTournament(id, name) {
   loadCategories(id);
 }
 
-// ── SCREEN 2 ──
-function detectGender(cat) {
-  const sex = cat.ca_sex !== undefined ? cat.ca_sex : (cat.sex !== undefined ? cat.sex : null);
-  if (sex !== null && sex !== '') {
-    const s = String(sex);
-    if (s === '2') return 'female';
-    if (s === '1') return 'male';
-    if (s.toLowerCase().match(/f|ж|women|girl|female/)) return 'female';
-    if (s.toLowerCase().match(/m|м|men|boy|male/)) return 'male';
-  }
-  const name = (cat.ca_name || cat.name || '').toLowerCase();
-  if (name.match(/жен|дев|women|girl/)) return 'female';
-  if (name.match(/муж|юнош|men|boy/)) return 'male';
-  return 'unknown';
-}
+// ── SCREEN 2: Categories ──
+// API: data.weight_categories = { "Девушки": { "2327": {w_id, w_weight, w_sex}, ... }, "Юноши": {...} }
+// w_sex: "6" = female (Девушки), "2" = male (Юноши)
 
 async function loadCategories(compId) {
   const el = document.getElementById('s2-content');
@@ -216,34 +205,41 @@ async function loadCategories(compId) {
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   try {
     const resp = await apiFetch(`/api/competitions/${compId}`);
-    const cats = Array.isArray(resp) ? resp : (resp.data || resp.categories || resp.category_set || []);
-    if (!cats.length) { el.innerHTML = emptyBox('Категории не найдены'); return; }
-    const males = [], females = [], unknowns = [];
-    cats.forEach(c => {
-      const g = detectGender(c);
-      if (g === 'male') males.push(c);
-      else if (g === 'female') females.push(c);
-      else unknowns.push(c);
-    });
+    const weightCats = resp.data?.weight_categories || {};
+
+    const males = [];
+    const females = [];
+
+    // weightCats is { "Девушки": { id: {...}, ... }, "Юноши": { id: {...}, ... } }
+    for (const [groupName, cats] of Object.entries(weightCats)) {
+      const isFemale = groupName.toLowerCase().includes('дев') || groupName.toLowerCase().includes('жен') || groupName.toLowerCase().includes('women') || groupName.toLowerCase().includes('girl');
+      for (const [catId, cat] of Object.entries(cats)) {
+        const entry = { id: catId, weight: cat.w_weight || catId, sex: cat.w_sex, group: groupName };
+        if (isFemale || cat.w_sex === '6') females.push(entry);
+        else males.push(entry);
+      }
+    }
+
+    if (!males.length && !females.length) { el.innerHTML = emptyBox('Категории не найдены'); return; }
+
     let html = '';
-    if (males.length) html += renderGenderSection(males, 'male', '♂ Мужчины');
-    if (females.length) html += renderGenderSection(females, 'female', '♀ Женщины');
-    if (unknowns.length) html += renderGenderSection(unknowns, 'unknown', '• Категории');
-    el.innerHTML = html || emptyBox('Категории не найдены');
+    if (females.length) html += renderCatSection(females, 'female', '♀ Девушки / Женщины');
+    if (males.length) html += renderCatSection(males, 'male', '♂ Юноши / Мужчины');
+    el.innerHTML = html;
   } catch(e) {
     el.innerHTML = errBox('Не удалось загрузить категории.<br>' + e.message);
   }
 }
 
-function renderGenderSection(cats, gender, label) {
-  let html = `<div class="gender-section"><div class="gender-header ${gender}">${label}</div><div class="gender-cards">`;
+function renderCatSection(cats, gender, label) {
+  let html = `<div class="gender-section">
+    <div class="gender-header ${gender}">${label}</div>
+    <div class="gender-cards">`;
   cats.forEach(c => {
-    const id = c.ca_id || c.id;
-    const name = c.ca_name || c.name || `Категория #${id}`;
-    const weight = c.ca_weight || c.weight || '';
-    html += `<div class="card" onclick="openCategory(${id}, ${JSON.stringify(name)})">
+    const name = c.weight === 'Абсолютная' ? '🏅 Абсолютная' : `До ${c.weight} кг`;
+    html += `<div class="card" onclick="openCategory(${c.id}, ${JSON.stringify(name)})">
       <div class="card-title">${escHtml(name)}</div>
-      ${weight ? `<div class="cat-badge ${gender === 'female' ? 'female' : 'male'}">⚖️ ${escHtml(String(weight))}</div>` : ''}
+      <div class="cat-badge ${gender}">⚖️ ${escHtml(String(c.weight))}</div>
     </div>`;
   });
   return html + '</div></div>';
@@ -260,7 +256,7 @@ function openCategory(id, name) {
 function goAthletes() { navigate('s4', 'Участники'); loadAthletes(); }
 function goFights() { navigate('s5', 'Ход встреч'); loadFights(); }
 
-// ── SCREEN 4 ──
+// ── SCREEN 4: Athletes ──
 async function loadAthletes() {
   const el = document.getElementById('s4-content');
   document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -269,15 +265,16 @@ async function loadAthletes() {
     const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/athletes`);
     const list = Array.isArray(resp) ? resp : (resp.data || resp.athletes || resp.results || []);
     if (!list.length) { el.innerHTML = emptyBox('Участники не найдены'); return; }
+
     let html = '<div class="table-wrap"><table><thead><tr><th>#</th><th>Спортсмен</th><th>Регион</th><th>Вес</th></tr></thead><tbody>';
     list.forEach((a, i) => {
-      const place = a.place || a.at_place || (i + 1);
-      const pClass = ['','place-1','place-2','place-3'][place] || 'place-other';
-      const fname = a.at_fname || a.first_name || '';
-      const lname = a.at_lname || a.last_name || '';
-      const mname = a.at_mname || a.middle_name || '';
-      const name = [lname, fname, mname].filter(Boolean).join(' ') || a.name || `Спортсмен ${i+1}`;
-      const region = a.at_region || a.region || a.club || '—';
+      const place = a.place || a.at_place || a.ho_place || (i + 1);
+      const pClass = place == 1 ? 'place-1' : place == 2 ? 'place-2' : place == 3 ? 'place-3' : 'place-other';
+      const fname = a.at_fname || a.first_name || a.fname || '';
+      const lname = a.at_lname || a.last_name || a.lname || '';
+      const mname = a.at_mname || a.middle_name || a.mname || '';
+      const name = [lname, fname, mname].filter(Boolean).join(' ') || a.name || a.at_name || `Спортсмен ${i+1}`;
+      const region = a.at_region || a.region || a.club || a.at_city || '—';
       const w = a.at_weight || a.weight;
       const weight = w ? w + ' кг' : '—';
       html += `<tr>
@@ -293,7 +290,7 @@ async function loadAthletes() {
   }
 }
 
-// ── SCREEN 5 ──
+// ── SCREEN 5: Fights ──
 async function loadFights() {
   const el = document.getElementById('s5-content');
   document.getElementById('s5-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -302,14 +299,20 @@ async function loadFights() {
     const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/hod`);
     const list = Array.isArray(resp) ? resp : (resp.data || resp.fights || resp.results || []);
     if (!list.length) { el.innerHTML = emptyBox('Встречи не найдены или ещё не начались'); return; }
+
     let html = '';
     list.forEach((f, i) => {
-      const round = f.round || f.tur || f.stage || f.ho_round || '';
+      const round = f.round || f.tur || f.stage || f.ho_round || f.ho_tur || '';
       const num = f.ho_num || f.number || (i + 1);
-      const score = f.score || f.ho_score || f.result || '';
+      const score = f.score || f.ho_score || f.result || f.ho_result || '';
       const winner = f.winner || f.ho_winner || null;
-      const a1 = getAthlete(f, 'red', 'athlete1', 'athlete_1', 'ho_red', 'sportsman1');
-      const a2 = getAthlete(f, 'blue', 'athlete2', 'athlete_2', 'ho_blue', 'sportsman2');
+
+      const a1 = extractAthlete(f, ['red', 'athlete1', 'athlete_1', 'ho_red', 'sportsman1', 'ho_athlete1']);
+      const a2 = extractAthlete(f, ['blue', 'athlete2', 'athlete_2', 'ho_blue', 'sportsman2', 'ho_athlete2']);
+
+      const a1wins = winner == 1 || winner === 'red' || winner === '1';
+      const a2wins = winner == 2 || winner === 'blue' || winner === '2';
+
       html += `<div class="fight-card">
         <div class="fight-meta">
           ${round ? `<span>🏁 ${escHtml(String(round))}</span>` : ''}
@@ -318,13 +321,15 @@ async function loadFights() {
         </div>
         <div class="fighters">
           <div class="fighter left">
-            ${escHtml(a1.name)}<div class="fight-club">${escHtml(a1.club)}</div>
-            ${(winner == 1 || winner === 'red') ? '<div class="winner-tag">🏆 Победитель</div>' : ''}
+            ${escHtml(a1.name)}
+            <div class="fight-club">${escHtml(a1.club)}</div>
+            ${a1wins ? '<div class="winner-tag">🏆 Победитель</div>' : ''}
           </div>
           <div class="vs-badge">VS</div>
           <div class="fighter right">
-            ${escHtml(a2.name)}<div class="fight-club">${escHtml(a2.club)}</div>
-            ${(winner == 2 || winner === 'blue') ? '<div class="winner-tag">🏆 Победитель</div>' : ''}
+            ${escHtml(a2.name)}
+            <div class="fight-club">${escHtml(a2.club)}</div>
+            ${a2wins ? '<div class="winner-tag">🏆 Победитель</div>' : ''}
           </div>
         </div>
       </div>`;
@@ -335,13 +340,15 @@ async function loadFights() {
   }
 }
 
-function getAthlete(f, ...keys) {
+function extractAthlete(f, keys) {
   for (const k of keys) {
     const o = f[k];
     if (!o) continue;
     if (typeof o === 'object') {
-      const name = [o.at_lname || o.last_name, o.at_fname || o.first_name].filter(Boolean).join(' ') || o.name || '—';
-      const club = o.at_region || o.region || o.club || '';
+      const fname = o.at_fname || o.first_name || o.fname || '';
+      const lname = o.at_lname || o.last_name || o.lname || '';
+      const name = [lname, fname].filter(Boolean).join(' ') || o.name || o.at_name || '—';
+      const club = o.at_region || o.region || o.club || o.at_city || '';
       return { name, club };
     }
     if (typeof o === 'string' && o.trim()) return { name: o, club: '' };
