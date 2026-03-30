@@ -237,7 +237,7 @@ function renderCatSection(cats, gender, label) {
     <div class="gender-cards">`;
   cats.forEach(c => {
     const name = c.weight === 'Абсолютная' ? '🏅 Абсолютная' : `До ${c.weight} кг`;
-    html += `<div class="card" onclick="openCategory(${c.id}, ${JSON.stringify(name)})">
+    html += `<div class="card" onclick="openCategory(${c.id}, this.dataset.name)" data-name="${escHtml(name)}">
       <div class="card-title">${escHtml(name)}</div>
       <div class="cat-badge ${gender}">⚖️ ${escHtml(String(c.weight))}</div>
     </div>`;
