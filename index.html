@@ -290,7 +290,8 @@ async function loadFights() {
     let html = '';
     rounds.forEach(round => {
       html += `<div class="round-label">🏁 ${escHtml(round)}</div>`;
-      hod[round].forEach((fight, i) => {
+      const fights = Array.isArray(hod[round]) ? hod[round] : Object.values(hod[round]);
+      fights.forEach((fight, i) => {
         const left = fight.left && fight.left !== 'NO' ? fight.left : null;
         const right = fight.right && fight.right !== 'NO' ? fight.right : null;
 
