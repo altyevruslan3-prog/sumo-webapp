@@ -166,7 +166,7 @@ async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
   try {
-    const resp = await apiFetch('/api/competitions/');
+    const resp = await apiFetch('/api/competitions');
     const list = Array.isArray(resp) ? resp : (resp.data || resp.results || []);
     if (!list.length) { el.innerHTML = emptyBox('Турниры не найдены'); return; }
     el.innerHTML = '<div class="card-list">' + list.map(c => {
@@ -215,7 +215,7 @@ async function loadCategories(compId) {
   document.getElementById('s2-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span>`;
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   try {
-    const resp = await apiFetch(`/api/competitions/${compId}/`);
+    const resp = await apiFetch(`/api/competitions/${compId}`);
     const cats = Array.isArray(resp) ? resp : (resp.data || resp.categories || resp.category_set || []);
     if (!cats.length) { el.innerHTML = emptyBox('Категории не найдены'); return; }
     const males = [], females = [], unknowns = [];
