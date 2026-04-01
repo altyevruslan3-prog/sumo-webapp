@@ -57,6 +57,8 @@
   .action-btn.athletes:active { background: var(--blue-soft); }
   .action-btn.fights { border-color: rgba(245,200,66,.25); }
   .action-btn.fights:active { background: #2a240a; }
+  .action-btn.bracket { border-color: rgba(100,200,100,.25); }
+  .action-btn.bracket:active { background: #0a2a0a; }
   .action-sub { font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 2px; }
   .table-wrap { overflow-x: auto; margin-top: 4px; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -82,6 +84,85 @@
   .bye-tag { font-size: 11px; color: var(--muted); font-style: italic; }
   .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
   .breadcrumb span { color: var(--text); font-weight: 600; }
+
+  /* ── BRACKET ── */
+  #s6 { padding: 0; }
+  #s6 .breadcrumb { padding: 16px 16px 0; margin-bottom: 8px; }
+  #s6 .screen-label { padding: 0 16px; }
+  .bracket-scroll { overflow-x: auto; overflow-y: auto; padding: 16px; padding-bottom: 32px; }
+  .bracket-wrap { display: flex; gap: 0; align-items: flex-start; min-width: max-content; }
+  .bracket-round { display: flex; flex-direction: column; min-width: 160px; margin-right: 32px; position: relative; }
+  .bracket-round:last-child { margin-right: 0; }
+  .bracket-round-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px; text-align: center; white-space: nowrap;
+  }
+  .bracket-matches { display: flex; flex-direction: column; }
+  .bracket-match-wrap { display: flex; align-items: center; position: relative; }
+  .bracket-match {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 160px;
+    flex-shrink: 0;
+  }
+  .bracket-player {
+    padding: 7px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+    transition: background .15s;
+  }
+  .bracket-player:last-child { border-bottom: none; }
+  .bracket-player.winner {
+    background: rgba(245,200,66,.08);
+    color: var(--accent);
+  }
+  .bracket-player.loser { color: var(--muted); }
+  .bracket-player.bye { color: var(--muted); font-style: italic; font-weight: 400; }
+  .bracket-player .seed {
+    font-size: 9px; font-weight: 700; color: var(--muted);
+    background: var(--card2); border-radius: 4px; padding: 1px 4px;
+    flex-shrink: 0;
+  }
+  .bracket-player.winner .seed { background: rgba(245,200,66,.15); color: var(--accent); }
+  .bracket-player .pname { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bracket-player .trophy { font-size: 10px; flex-shrink: 0; }
+
+  /* connector lines */
+  .bracket-connector {
+    position: absolute;
+    right: -32px;
+    width: 32px;
+    pointer-events: none;
+  }
+
+  .bracket-spacer { flex: 1; }
+
+  /* winner box */
+  .bracket-winner-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 16px 12px;
+    background: rgba(245,200,66,.06);
+    border: 1px solid rgba(245,200,66,.3);
+    border-radius: var(--radius);
+    text-align: center;
+    margin-left: 16px;
+  }
+  .bracket-winner-box .trophy-big { font-size: 28px; margin-bottom: 6px; }
+  .bracket-winner-box .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .bracket-winner-box .name { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .bracket-winner-box .region { font-size: 10px; color: var(--muted); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -113,6 +194,10 @@
         <span class="ico">⚔️</span>
         <div><div>Ход встреч</div><div class="action-sub">Результаты поединков</div></div>
       </button>
+      <button class="action-btn bracket" onclick="goBracket()">
+        <span class="ico">🏆</span>
+        <div><div>Шахматка</div><div class="action-sub">Турнирная сетка</div></div>
+      </button>
     </div>
   </div>
   <div class="screen" id="s4">
@@ -124,6 +209,11 @@
     <div id="s5-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Ход встреч</div>
     <div id="s5-content"></div>
+  </div>
+  <div class="screen" id="s6">
+    <div id="s6-breadcrumb" class="breadcrumb"></div>
+    <div class="screen-label" style="padding:0 16px">Шахматка</div>
+    <div id="s6-content"></div>
   </div>
 </div>
 
@@ -163,7 +253,7 @@ async function apiFetch(path) {
 function errBox(msg) { return `<div class="error-box"><div class="ico">⚠️</div><p>${msg}</p></div>`; }
 function emptyBox(msg) { return `<div class="empty-box"><div class="ico">🔍</div><p>${msg}</p></div>`; }
 
-// ── SCREEN 1: Tournaments ──
+// ── SCREEN 1 ──
 async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
@@ -196,7 +286,7 @@ function openTournament(id, name) {
   loadCategories(id);
 }
 
-// ── SCREEN 2: Categories ──
+// ── SCREEN 2 ──
 async function loadCategories(compId) {
   const el = document.getElementById('s2-content');
   document.getElementById('s2-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span>`;
@@ -245,8 +335,9 @@ function openCategory(id, name) {
 // ── SCREEN 3 ──
 function goAthletes() { navigate('s4', 'Участники'); loadAthletes(); }
 function goFights() { navigate('s5', 'Ход встреч'); loadFights(); }
+function goBracket() { navigate('s6', 'Шахматка'); loadBracket(); }
 
-// ── SCREEN 4: Athletes ──
+// ── SCREEN 4 ──
 async function loadAthletes() {
   const el = document.getElementById('s4-content');
   document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -276,7 +367,7 @@ async function loadAthletes() {
   }
 }
 
-// ── SCREEN 5: Fights ──
+// ── SCREEN 5 ──
 async function loadFights() {
   const el = document.getElementById('s5-content');
   document.getElementById('s5-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -286,25 +377,22 @@ async function loadFights() {
     const hod = resp.data?.hod || {};
     const rounds = Object.keys(hod);
     if (!rounds.length) { el.innerHTML = emptyBox('Встречи не найдены или ещё не начались'); return; }
-
     let html = '';
     rounds.forEach(round => {
       html += `<div class="round-label">🏁 ${escHtml(round)}</div>`;
-      const fights = Array.isArray(hod[round]) ? hod[round] : Object.values(hod[round]);
+      const roundData = hod[round];
+      const fights = Array.isArray(roundData) ? roundData : Object.values(roundData);
       fights.forEach((fight, i) => {
         const left = fight.left && fight.left !== 'NO' ? fight.left : null;
         const right = fight.right && fight.right !== 'NO' ? fight.right : null;
-
         const leftName = left ? (left.us_fio || [left.us_family, left.us_name].filter(Boolean).join(' ') || '—') : 'BYE';
         const rightName = right ? (right.us_fio || [right.us_family, right.us_name].filter(Boolean).join(' ') || '—') : 'BYE';
         const leftRegion = left ? (left.us_region_x || '') : '';
         const rightRegion = right ? (right.us_region_x || '') : '';
-
         const leftPlace = left ? parseInt(left.za_place) : 999;
         const rightPlace = right ? parseInt(right.za_place) : 999;
         const leftWins = left && right && leftPlace < rightPlace && leftPlace < 500;
         const rightWins = left && right && rightPlace < leftPlace && rightPlace < 500;
-
         html += `<div class="fight-card">
           <div class="fight-meta"><span>Бой #${i + 1}</span></div>
           <div class="fighters">
@@ -326,6 +414,141 @@ async function loadFights() {
     el.innerHTML = html;
   } catch(e) {
     el.innerHTML = errBox('Не удалось загрузить встречи.<br>' + e.message);
+  }
+}
+
+// ── SCREEN 6: BRACKET ──
+async function loadBracket() {
+  const el = document.getElementById('s6-content');
+  document.getElementById('s6-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
+  el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
+  try {
+    const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/hod`);
+    const hod = resp.data?.hod || {};
+    const roundKeys = Object.keys(hod);
+    if (!roundKeys.length) { el.innerHTML = emptyBox('Данные не найдены'); return; }
+
+    // filter only main rounds (exclude утешение)
+    const mainRounds = roundKeys.filter(k => !k.toLowerCase().includes('утеш'));
+    const consolationRounds = roundKeys.filter(k => k.toLowerCase().includes('утеш'));
+
+    function getName(p) {
+      if (!p || p === 'NO') return null;
+      const fio = p.us_fio || [p.us_family, p.us_name].filter(Boolean).join(' ');
+      return fio || null;
+    }
+    function getSeed(p) {
+      return p ? p.za_draw : null;
+    }
+    function getRegion(p) {
+      return p ? (p.us_region_x || '') : '';
+    }
+    function isWinner(p, other) {
+      if (!p || p === 'NO' || !other || other === 'NO') return false;
+      const pp = parseInt(p.za_place);
+      const op = parseInt(other.za_place);
+      return pp < op && pp < 500;
+    }
+
+    function renderRound(roundName, fights) {
+      let html = `<div class="bracket-round">`;
+      html += `<div class="bracket-round-title">${escHtml(roundName)}</div>`;
+      html += `<div class="bracket-matches">`;
+
+      fights.forEach((fight) => {
+        const left = fight.left && fight.left !== 'NO' ? fight.left : null;
+        const right = fight.right && fight.right !== 'NO' ? fight.right : null;
+        const leftName = getName(left);
+        const rightName = getName(right);
+        const leftWins = left && right && isWinner(left, right);
+        const rightWins = left && right && isWinner(right, left);
+
+        html += `<div class="bracket-match-wrap" style="margin-bottom:8px;">`;
+        html += `<div class="bracket-match">`;
+
+        // left player
+        if (leftName) {
+          html += `<div class="bracket-player ${leftWins ? 'winner' : right ? 'loser' : ''}">
+            <span class="seed">${getSeed(left) || ''}</span>
+            <span class="pname" title="${escHtml(leftName)}">${escHtml(leftName)}</span>
+            ${leftWins ? '<span class="trophy">🏆</span>' : ''}
+          </div>`;
+        } else {
+          html += `<div class="bracket-player bye"><span class="pname">—</span></div>`;
+        }
+
+        // right player
+        if (rightName) {
+          html += `<div class="bracket-player ${rightWins ? 'winner' : left ? 'loser' : ''}">
+            <span class="seed">${getSeed(right) || ''}</span>
+            <span class="pname" title="${escHtml(rightName)}">${escHtml(rightName)}</span>
+            ${rightWins ? '<span class="trophy">🏆</span>' : ''}
+          </div>`;
+        } else {
+          html += `<div class="bracket-player bye"><span class="pname">BYE</span></div>`;
+        }
+
+        html += `</div>`; // bracket-match
+        html += `</div>`; // bracket-match-wrap
+      });
+
+      html += `</div></div>`;
+      return html;
+    }
+
+    // find overall winner
+    let overallWinner = null;
+    let overallRegion = '';
+    const finalRound = roundKeys.find(k => k.toLowerCase() === 'финал') || roundKeys[roundKeys.length - 1];
+    if (finalRound && hod[finalRound]) {
+      const finalFights = Array.isArray(hod[finalRound]) ? hod[finalRound] : Object.values(hod[finalRound]);
+      if (finalFights.length > 0) {
+        const f = finalFights[0];
+        const left = f.left && f.left !== 'NO' ? f.left : null;
+        const right = f.right && f.right !== 'NO' ? f.right : null;
+        if (left && right) {
+          if (isWinner(left, right)) { overallWinner = getName(left); overallRegion = getRegion(left); }
+          else if (isWinner(right, left)) { overallWinner = getName(right); overallRegion = getRegion(right); }
+        }
+      }
+    }
+
+    let html = '<div class="bracket-scroll"><div class="bracket-wrap">';
+
+    mainRounds.forEach(roundName => {
+      const roundData = hod[roundName];
+      const fights = Array.isArray(roundData) ? roundData : Object.values(roundData);
+      html += renderRound(roundName, fights);
+    });
+
+    // winner box
+    if (overallWinner) {
+      html += `<div class="bracket-winner-box">
+        <div class="trophy-big">🥇</div>
+        <div class="label">Победитель</div>
+        <div class="name">${escHtml(overallWinner)}</div>
+        <div class="region">${escHtml(overallRegion)}</div>
+      </div>`;
+    }
+
+    html += '</div>';
+
+    // consolation bracket
+    if (consolationRounds.length > 0) {
+      html += `<div style="padding:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Утешительные встречи</div>`;
+      html += '<div class="bracket-wrap">';
+      consolationRounds.forEach(roundName => {
+        const roundData = hod[roundName];
+        const fights = Array.isArray(roundData) ? roundData : Object.values(roundData);
+        html += renderRound(roundName, fights);
+      });
+      html += '</div>';
+    }
+
+    html += '</div>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = errBox('Не удалось загрузить шахматку.<br>' + e.message);
   }
 }
 
