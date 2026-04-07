@@ -85,28 +85,26 @@
   .bye-tag { font-size: 11px; color: var(--muted); font-style: italic; }
   .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
   .breadcrumb span { color: var(--text); font-weight: 600; }
-
-  /* ── SEARCH ── */
+  /* SEARCH */
   .search-box { display: flex; gap: 10px; margin-bottom: 16px; }
   .search-input { flex: 1; padding: 12px 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; font-family: inherit; outline: none; transition: border-color .15s; }
   .search-input:focus { border-color: var(--accent); }
   .search-input::placeholder { color: var(--muted); }
   .search-btn { padding: 12px 18px; background: var(--accent); border: none; border-radius: var(--radius); color: #0e0e12; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }
   .search-btn:active { opacity: .8; }
-  .search-progress { font-size: 12px; color: var(--muted); margin-bottom: 12px; display: none; }
+  .progress-text { font-size: 12px; color: var(--muted); margin-bottom: 12px; display: none; }
   .search-result-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
   .search-result-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
   .search-result-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-top: 3px; }
-  .search-result-place { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 700; font-size: 11px; margin-right: 4px; }
-
-  /* ── RATING ── */
-  .age-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
-  .age-tab { padding: 8px 16px; border-radius: 30px; border: 1px solid var(--border); background: var(--card); color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0; }
-  .age-tab.active { background: var(--accent); color: #0e0e12; border-color: var(--accent); }
+  .splace { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 700; font-size: 11px; margin-right: 4px; }
+  /* RATING */
+  .tabs-scroll { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+  .tab-btn { padding: 8px 16px; border-radius: 30px; border: 1px solid var(--border); background: var(--card); color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+  .tab-btn.active { background: var(--accent); color: #0e0e12; border-color: var(--accent); }
   .gender-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-  .gender-tab { flex: 1; padding: 10px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; transition: all .15s; }
-  .gender-tab.male.active { background: var(--blue-soft); color: var(--blue); border-color: var(--blue); }
-  .gender-tab.female.active { background: var(--pink-soft); color: var(--pink); border-color: var(--pink); }
+  .gtab { flex: 1; padding: 10px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; transition: all .15s; color: var(--muted); }
+  .gtab.male.active { background: var(--blue-soft); color: var(--blue); border-color: var(--blue); }
+  .gtab.female.active { background: var(--pink-soft); color: var(--pink); border-color: var(--pink); }
   .rating-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; }
   .rating-rank { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--muted); width: 28px; text-align: center; flex-shrink: 0; }
   .rating-rank.r1 { color: #f5c842; }
@@ -115,17 +113,16 @@
   .rating-info { flex: 1; min-width: 0; }
   .rating-name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rating-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .rating-medals { font-size: 11px; margin-top: 2px; }
   .rating-score { text-align: right; flex-shrink: 0; }
   .rating-pts { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); }
   .rating-pts-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-  .rating-medals { font-size: 11px; margin-top: 2px; }
-
-  /* ── BRACKET ── */
+  /* BRACKET */
   #s6 { padding: 0; }
   #s6 .breadcrumb { padding: 16px 16px 0; margin-bottom: 8px; }
   #s6 .screen-label { padding: 0 16px; }
   .bracket-scroll { overflow-x: auto; padding: 16px; padding-bottom: 32px; }
-  .bracket-wrap { display: flex; gap: 0; align-items: flex-start; min-width: max-content; }
+  .bracket-wrap { display: flex; align-items: flex-start; min-width: max-content; }
   .bracket-round { display: flex; flex-direction: column; min-width: 160px; margin-right: 32px; }
   .bracket-round:last-child { margin-right: 0; }
   .bracket-round-title { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; text-align: center; white-space: nowrap; }
@@ -138,12 +135,11 @@
   .bracket-player .seed { font-size: 9px; font-weight: 700; color: var(--muted); background: var(--card2); border-radius: 4px; padding: 1px 4px; flex-shrink: 0; }
   .bracket-player.winner .seed { background: rgba(245,200,66,.15); color: var(--accent); }
   .bracket-player .pname { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bracket-player .trophy { font-size: 10px; flex-shrink: 0; }
   .bracket-winner-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 140px; padding: 16px 12px; background: rgba(245,200,66,.06); border: 1px solid rgba(245,200,66,.3); border-radius: var(--radius); text-align: center; margin-left: 16px; }
   .bracket-winner-box .trophy-big { font-size: 28px; margin-bottom: 6px; }
-  .bracket-winner-box .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .bracket-winner-box .name { font-size: 13px; font-weight: 700; color: var(--accent); }
-  .bracket-winner-box .region { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .bracket-winner-box .wlabel { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .bracket-winner-box .wname { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .bracket-winner-box .wregion { font-size: 10px; color: var(--muted); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -151,78 +147,61 @@
 <header>
   <button id="back-btn" aria-label="Назад">←</button>
   <div class="header-title" id="header-title">🥋 SUMO SPORT</div>
-  <button class="header-icon-btn" id="rating-header-btn" onclick="goRating()" title="Рейтинг">🏅</button>
-  <button class="header-icon-btn" id="search-header-btn" onclick="goSearch()" title="Поиск">🔍</button>
+  <button class="header-icon-btn" id="rating-btn" onclick="goRating()">🏅</button>
+  <button class="header-icon-btn" id="search-btn" onclick="goSearch()">🔍</button>
 </header>
 
 <div class="screens">
-  <!-- S1 -->
   <div class="screen active" id="s1">
     <div class="screen-label">Турниры</div>
     <div id="s1-content"><div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка…</div></div></div>
   </div>
-  <!-- S2 -->
   <div class="screen" id="s2">
     <div id="s2-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Категории</div>
     <div id="s2-content"></div>
   </div>
-  <!-- S3 -->
   <div class="screen" id="s3">
     <div id="s3-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Что смотрим?</div>
     <div class="action-grid">
-      <button class="action-btn athletes" onclick="goAthletes()">
-        <span class="ico">👥</span>
-        <div><div>Списки участников</div><div class="action-sub">Все спортсмены категории</div></div>
-      </button>
-      <button class="action-btn fights" onclick="goFights()">
-        <span class="ico">⚔️</span>
-        <div><div>Ход встреч</div><div class="action-sub">Результаты поединков</div></div>
-      </button>
-      <button class="action-btn bracket" onclick="goBracket()">
-        <span class="ico">🏆</span>
-        <div><div>Шахматка</div><div class="action-sub">Турнирная сетка</div></div>
-      </button>
+      <button class="action-btn athletes" onclick="goAthletes()"><span class="ico">👥</span><div><div>Списки участников</div><div class="action-sub">Все спортсмены категории</div></div></button>
+      <button class="action-btn fights" onclick="goFights()"><span class="ico">⚔️</span><div><div>Ход встреч</div><div class="action-sub">Результаты поединков</div></div></button>
+      <button class="action-btn bracket" onclick="goBracket()"><span class="ico">🏆</span><div><div>Шахматка</div><div class="action-sub">Турнирная сетка</div></div></button>
     </div>
   </div>
-  <!-- S4 -->
   <div class="screen" id="s4">
     <div id="s4-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Участники</div>
     <div id="s4-content"></div>
   </div>
-  <!-- S5 -->
   <div class="screen" id="s5">
     <div id="s5-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Ход встреч</div>
     <div id="s5-content"></div>
   </div>
-  <!-- S6 -->
   <div class="screen" id="s6">
     <div id="s6-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label" style="padding:0 16px">Шахматка</div>
     <div id="s6-content"></div>
   </div>
-  <!-- S7: Search -->
   <div class="screen" id="s7">
     <div class="screen-label">Поиск спортсмена</div>
     <div class="search-box">
       <input class="search-input" id="search-input" type="text" placeholder="Введите фамилию…" />
       <button class="search-btn" onclick="doSearch()">Найти</button>
     </div>
-    <div class="search-progress" id="search-progress"></div>
+    <div class="progress-text" id="search-progress"></div>
     <div id="s7-content"></div>
   </div>
-  <!-- S8: Rating -->
   <div class="screen" id="s8">
-    <div class="screen-label">Рейтинг по возрасту</div>
-    <div class="age-tabs" id="age-tabs"></div>
+    <div class="screen-label">Рейтинг</div>
+    <div class="tabs-scroll" id="age-tabs"></div>
     <div class="gender-tabs">
-      <button class="gender-tab male active" id="gtab-male" onclick="setGender('male')">♂ Юноши</button>
-      <button class="gender-tab female" id="gtab-female" onclick="setGender('female')">♀ Девушки</button>
+      <button class="gtab male active" id="gtab-male" onclick="setGender('male')">♂ Юноши</button>
+      <button class="gtab female" id="gtab-female" onclick="setGender('female')">♀ Девушки</button>
     </div>
-    <div class="search-progress" id="rating-progress"></div>
+    <div class="progress-text" id="rating-progress"></div>
     <div id="s8-content"></div>
   </div>
 </div>
@@ -234,24 +213,21 @@ const state = {
   ratingData: null, ratingAge: null, ratingGender: 'male'
 };
 
-const POINTS = { 1: 10, 2: 7, 3: 5, 4: 3, 5: 3 };
-function getPoints(place) {
-  if (place >= 500) return 1;
-  return POINTS[place] || (place <= 5 ? 3 : 1);
-}
+const POINTS = {1:10, 2:7, 3:5, 4:3, 5:3};
+function getPoints(p) { return POINTS[p] || (p<=5?3:1); }
 
 function escHtml(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function setTitle(t) { document.getElementById('header-title').textContent = t; }
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const isS1 = id === 's1';
+  const isHome = id === 's1';
   document.getElementById('back-btn').classList.toggle('visible', state.history.length > 0);
-  document.getElementById('search-header-btn').style.display = isS1 ? 'flex' : 'none';
-  document.getElementById('rating-header-btn').style.display = isS1 ? 'flex' : 'none';
+  document.getElementById('search-btn').style.display = isHome ? 'flex' : 'none';
+  document.getElementById('rating-btn').style.display = isHome ? 'flex' : 'none';
 }
 
 function navigate(screenId, title) {
@@ -263,13 +239,13 @@ function navigate(screenId, title) {
 document.getElementById('back-btn').onclick = () => {
   if (!state.history.length) return;
   const prev = state.history.pop();
+  const isHome = prev === 's1';
   document.getElementById('back-btn').classList.toggle('visible', state.history.length > 0);
-  const isS1 = prev === 's1';
-  document.getElementById('search-header-btn').style.display = isS1 ? 'flex' : 'none';
-  document.getElementById('rating-header-btn').style.display = isS1 ? 'flex' : 'none';
+  document.getElementById('search-btn').style.display = isHome ? 'flex' : 'none';
+  document.getElementById('rating-btn').style.display = isHome ? 'flex' : 'none';
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(prev).classList.add('active');
-  const titles = { s1: '🥋 SUMO SPORT', s2: state.compName, s3: state.catName };
+  const titles = { s1:'🥋 SUMO SPORT', s2:state.compName, s3:state.catName };
   if (titles[prev]) setTitle(titles[prev]);
 };
 
@@ -281,7 +257,7 @@ async function apiFetch(path) {
 function errBox(msg) { return `<div class="error-box"><div class="ico">⚠️</div><p>${msg}</p></div>`; }
 function emptyBox(msg) { return `<div class="empty-box"><div class="ico">🔍</div><p>${msg}</p></div>`; }
 
-// ── S1 ──
+// ── S1: Tournaments ──
 async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
@@ -309,7 +285,7 @@ function openTournament(id, name) {
   navigate('s2', name); loadCategories(id);
 }
 
-// ── S2 ──
+// ── S2: Categories ──
 async function loadCategories(compId) {
   const el = document.getElementById('s2-content');
   document.getElementById('s2-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span>`;
@@ -357,7 +333,7 @@ function goAthletes() { navigate('s4', 'Участники'); loadAthletes(); }
 function goFights() { navigate('s5', 'Ход встреч'); loadFights(); }
 function goBracket() { navigate('s6', 'Шахматка'); loadBracket(); }
 
-// ── S4 ──
+// ── S4: Athletes ──
 async function loadAthletes() {
   const el = document.getElementById('s4-content');
   document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -368,22 +344,17 @@ async function loadAthletes() {
     if (!list.length) { el.innerHTML = emptyBox('Участники не найдены'); return; }
     let html = '<div class="table-wrap"><table><thead><tr><th>#</th><th>Спортсмен</th><th>Регион</th><th>Разряд</th></tr></thead><tbody>';
     list.forEach((a, i) => {
-      const placeNum = parseInt(a.za_place) || (i + 1);
-      const pClass = placeNum===1?'place-1':placeNum===2?'place-2':placeNum===3?'place-3':'place-other';
-      const placeLabel = placeNum >= 500 ? '—' : placeNum;
-      const name = a.us_fio || [a.us_family, a.us_name, a.us_otch].filter(Boolean).join(' ') || '—';
-      html += `<tr>
-        <td><span class="place-badge ${pClass}">${placeLabel}</span></td>
-        <td>${escHtml(name)}</td>
-        <td style="color:var(--muted);font-size:12px">${escHtml(a.us_region_x||'—')}</td>
-        <td style="color:var(--muted)">${escHtml(a.us_razryad_x||'—')}</td>
-      </tr>`;
+      const pn = parseInt(a.za_place) || (i+1);
+      const pc = pn===1?'place-1':pn===2?'place-2':pn===3?'place-3':'place-other';
+      const pl = pn >= 500 ? '—' : pn;
+      const name = a.us_fio || [a.us_family,a.us_name,a.us_otch].filter(Boolean).join(' ') || '—';
+      html += `<tr><td><span class="place-badge ${pc}">${pl}</span></td><td>${escHtml(name)}</td><td style="color:var(--muted);font-size:12px">${escHtml(a.us_region_x||'—')}</td><td style="color:var(--muted)">${escHtml(a.us_razryad_x||'—')}</td></tr>`;
     });
     el.innerHTML = html + '</tbody></table></div>';
   } catch(e) { el.innerHTML = errBox('Не удалось загрузить участников.<br>' + e.message); }
 }
 
-// ── S5 ──
+// ── S5: Fights ──
 async function loadFights() {
   const el = document.getElementById('s5-content');
   document.getElementById('s5-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -396,30 +367,27 @@ async function loadFights() {
     let html = '';
     rounds.forEach(round => {
       html += `<div class="round-label">🏁 ${escHtml(round)}</div>`;
-      const roundData = hod[round];
-      const fights = Array.isArray(roundData) ? roundData : Object.values(roundData);
+      const rd = hod[round];
+      const fights = Array.isArray(rd) ? rd : Object.values(rd);
       fights.forEach((fight, i) => {
-        const left = fight.left && fight.left !== 'NO' ? fight.left : null;
-        const right = fight.right && fight.right !== 'NO' ? fight.right : null;
-        const leftName = left ? (left.us_fio || [left.us_family, left.us_name].filter(Boolean).join(' ') || '—') : 'BYE';
-        const rightName = right ? (right.us_fio || [right.us_family, right.us_name].filter(Boolean).join(' ') || '—') : 'BYE';
-        const lp = left ? parseInt(left.za_place) : 999, rp = right ? parseInt(right.za_place) : 999;
-        const lw = left && right && lp < rp && lp < 500, rw = left && right && rp < lp && rp < 500;
-        html += `<div class="fight-card">
-          <div class="fight-meta"><span>Бой #${i+1}</span></div>
-          <div class="fighters">
-            <div class="fighter left">${left?escHtml(leftName):'<span class="bye-tag">BYE</span>'}${left?`<div class="fight-club">${escHtml(left.us_region_x||'')}</div>`:''}${lw?'<div class="winner-tag">🏆 Победитель</div>':''}</div>
-            <div class="vs-badge">VS</div>
-            <div class="fighter right">${right?escHtml(rightName):'<span class="bye-tag">BYE</span>'}${right?`<div class="fight-club">${escHtml(right.us_region_x||'')}</div>`:''}${rw?'<div class="winner-tag">🏆 Победитель</div>':''}</div>
-          </div>
-        </div>`;
+        const l = fight.left && fight.left !== 'NO' ? fight.left : null;
+        const r = fight.right && fight.right !== 'NO' ? fight.right : null;
+        const ln = l ? (l.us_fio||[l.us_family,l.us_name].filter(Boolean).join(' ')||'—') : 'BYE';
+        const rn = r ? (r.us_fio||[r.us_family,r.us_name].filter(Boolean).join(' ')||'—') : 'BYE';
+        const lp = l ? parseInt(l.za_place) : 999, rp = r ? parseInt(r.za_place) : 999;
+        const lw = l && r && lp < rp && lp < 500, rw = l && r && rp < lp && rp < 500;
+        html += `<div class="fight-card"><div class="fight-meta"><span>Бой #${i+1}</span></div><div class="fighters">
+          <div class="fighter left">${l?escHtml(ln):'<span class="bye-tag">BYE</span>'}${l?`<div class="fight-club">${escHtml(l.us_region_x||'')}</div>`:''}${lw?'<div class="winner-tag">🏆 Победитель</div>':''}</div>
+          <div class="vs-badge">VS</div>
+          <div class="fighter right">${r?escHtml(rn):'<span class="bye-tag">BYE</span>'}${r?`<div class="fight-club">${escHtml(r.us_region_x||'')}</div>`:''}${rw?'<div class="winner-tag">🏆 Победитель</div>':''}</div>
+        </div></div>`;
       });
     });
     el.innerHTML = html;
   } catch(e) { el.innerHTML = errBox('Не удалось загрузить встречи.<br>' + e.message); }
 }
 
-// ── S6 ──
+// ── S6: Bracket ──
 async function loadBracket() {
   const el = document.getElementById('s6-content');
   document.getElementById('s6-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -430,32 +398,42 @@ async function loadBracket() {
     const roundKeys = Object.keys(hod);
     if (!roundKeys.length) { el.innerHTML = emptyBox('Данные шахматки не найдены'); return; }
     const mainRounds = roundKeys.filter(k => !k.toLowerCase().includes('утеш'));
-    const consolationRounds = roundKeys.filter(k => k.toLowerCase().includes('утеш'));
-    function getName(p) { if (!p||p==='NO') return null; return p.us_fio||[p.us_family,p.us_name].filter(Boolean).join(' ')||null; }
-    function isWin(p,o) { if(!p||p==='NO'||!o||o==='NO') return false; const pp=parseInt(p.za_place),op=parseInt(o.za_place); return pp<op&&pp<500; }
-    function renderRound(rn, fights) {
-      let html = `<div class="bracket-round"><div class="bracket-round-title">${escHtml(rn)}</div>`;
+    const consolRounds = roundKeys.filter(k => k.toLowerCase().includes('утеш'));
+    function gn(p) { return p&&p!=='NO'?(p.us_fio||[p.us_family,p.us_name].filter(Boolean).join(' ')||null):null; }
+    function iw(p,o) { if(!p||p==='NO'||!o||o==='NO') return false; const pp=parseInt(p.za_place),op=parseInt(o.za_place); return pp<op&&pp<500; }
+    function renderRound(rname, fights) {
+      let h = `<div class="bracket-round"><div class="bracket-round-title">${escHtml(rname)}</div>`;
       fights.forEach(f => {
         const l=f.left&&f.left!=='NO'?f.left:null, r=f.right&&f.right!=='NO'?f.right:null;
-        const ln=getName(l), rn2=getName(r), lw=l&&r&&isWin(l,r), rw=l&&r&&isWin(r,l);
-        html += `<div class="bracket-match">`;
-        html += ln?`<div class="bracket-player ${lw?'winner':r?'loser':''}"><span class="seed">${l.za_draw||''}</span><span class="pname" title="${escHtml(ln)}">${escHtml(ln)}</span>${lw?'<span class="trophy">🏆</span>':''}</div>`:`<div class="bracket-player bye"><span class="pname">—</span></div>`;
-        html += rn2?`<div class="bracket-player ${rw?'winner':l?'loser':''}"><span class="seed">${r.za_draw||''}</span><span class="pname" title="${escHtml(rn2)}">${escHtml(rn2)}</span>${rw?'<span class="trophy">🏆</span>':''}</div>`:`<div class="bracket-player bye"><span class="pname">BYE</span></div>`;
-        html += `</div>`;
+        const ln=gn(l), rn=gn(r), lw=l&&r&&iw(l,r), rw=l&&r&&iw(r,l);
+        h += `<div class="bracket-match">`;
+        h += ln ? `<div class="bracket-player ${lw?'winner':r?'loser':''}"><span class="seed">${l.za_draw||''}</span><span class="pname" title="${escHtml(ln)}">${escHtml(ln)}</span>${lw?'<span>🏆</span>':''}</div>` : `<div class="bracket-player bye"><span class="pname">—</span></div>`;
+        h += rn ? `<div class="bracket-player ${rw?'winner':l?'loser':''}"><span class="seed">${r.za_draw||''}</span><span class="pname" title="${escHtml(rn)}">${escHtml(rn)}</span>${rw?'<span>🏆</span>':''}</div>` : `<div class="bracket-player bye"><span class="pname">BYE</span></div>`;
+        h += `</div>`;
       });
-      return html + '</div>';
+      return h + '</div>';
     }
     let winner=null, winnerRegion='';
-    const fk=roundKeys.find(k=>k.toLowerCase()==='финал')||mainRounds[mainRounds.length-1];
-    if(fk&&hod[fk]){const ff=Array.isArray(hod[fk])?hod[fk]:Object.values(hod[fk]);if(ff[0]){const l=ff[0].left&&ff[0].left!=='NO'?ff[0].left:null,r=ff[0].right&&ff[0].right!=='NO'?ff[0].right:null;if(l&&r){if(isWin(l,r)){winner=getName(l);winnerRegion=l.us_region_x||'';}else if(isWin(r,l)){winner=getName(r);winnerRegion=r.us_region_x||'';}}}}
-    let html='<div class="bracket-scroll"><div class="bracket-wrap">';
-    mainRounds.forEach(rk=>{const rd=hod[rk];html+=renderRound(rk,Array.isArray(rd)?rd:Object.values(rd));});
-    if(winner)html+=`<div class="bracket-winner-box"><div class="trophy-big">🥇</div><div class="label">Победитель</div><div class="name">${escHtml(winner)}</div><div class="region">${escHtml(winnerRegion)}</div></div>`;
-    html+='</div>';
-    if(consolationRounds.length){html+=`<div style="padding:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Утешительные встречи</div><div class="bracket-wrap">`;consolationRounds.forEach(rk=>{const rd=hod[rk];html+=renderRound(rk,Array.isArray(rd)?rd:Object.values(rd));});html+='</div>';}
-    html+='</div>';
-    el.innerHTML=html;
-  } catch(e){el.innerHTML=errBox('Не удалось загрузить шахматку.<br>'+e.message);}
+    const fk = roundKeys.find(k=>k.toLowerCase()==='финал') || mainRounds[mainRounds.length-1];
+    if (fk && hod[fk]) {
+      const ff = Array.isArray(hod[fk]) ? hod[fk] : Object.values(hod[fk]);
+      if (ff[0]) {
+        const l=ff[0].left&&ff[0].left!=='NO'?ff[0].left:null, r=ff[0].right&&ff[0].right!=='NO'?ff[0].right:null;
+        if (l&&r) { if(iw(l,r)){winner=gn(l);winnerRegion=l.us_region_x||'';}else if(iw(r,l)){winner=gn(r);winnerRegion=r.us_region_x||'';} }
+      }
+    }
+    let html = '<div class="bracket-scroll"><div class="bracket-wrap">';
+    mainRounds.forEach(rk => { const rd=hod[rk]; html+=renderRound(rk, Array.isArray(rd)?rd:Object.values(rd)); });
+    if (winner) html += `<div class="bracket-winner-box"><div class="trophy-big">🥇</div><div class="wlabel">Победитель</div><div class="wname">${escHtml(winner)}</div><div class="wregion">${escHtml(winnerRegion)}</div></div>`;
+    html += '</div>';
+    if (consolRounds.length) {
+      html += `<div style="padding:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Утешительные встречи</div><div class="bracket-wrap">`;
+      consolRounds.forEach(rk => { const rd=hod[rk]; html+=renderRound(rk, Array.isArray(rd)?rd:Object.values(rd)); });
+      html += '</div>';
+    }
+    html += '</div>';
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = errBox('Не удалось загрузить шахматку.<br>' + e.message); }
 }
 
 // ── S7: Search ──
@@ -474,7 +452,7 @@ async function doSearch() {
   const el = document.getElementById('s7-content');
   const progress = document.getElementById('search-progress');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
-  progress.style.display = 'block'; progress.textContent = 'Загрузка турниров…';
+  progress.style.display = 'block'; progress.textContent = 'Загрузка…';
   try {
     const compsResp = await apiFetch('/api/competitions');
     const comps = Array.isArray(compsResp) ? compsResp : (compsResp.data || []);
@@ -489,7 +467,7 @@ async function doSearch() {
       } catch { return {comp, cats:[]}; }
     });
     const compCats = await Promise.all(catTasks);
-    const total = compCats.reduce((s,c)=>s+c.cats.length,0);
+    const total = compCats.reduce((s,c)=>s+c.cats.length, 0);
     progress.textContent = `Поиск в ${total} категориях…`;
     let done = 0;
     const athleteTasks = compCats.flatMap(({comp, cats}) => cats.map(async ({catId, weight, group}) => {
@@ -505,17 +483,17 @@ async function doSearch() {
       done++; if(done%5===0) progress.textContent=`Проверено ${done} из ${total}…`;
     }));
     await Promise.all(athleteTasks);
-    progress.style.display='none';
-    if(!results.length){el.innerHTML=emptyBox(`По запросу «${escHtml(query)}» ничего не найдено`);return;}
+    progress.style.display = 'none';
+    if (!results.length) { el.innerHTML = emptyBox(`По запросу «${escHtml(query)}» ничего не найдено`); return; }
     results.sort((a,b)=>(a.place<500?a.place:999)-(b.place<500?b.place:999));
-    let html=`<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Найдено: ${results.length}</div>`;
-    results.forEach(r=>{
-      const pn=r.place>=500?null:r.place;
-      const pc=r.place===1?'place-1':r.place===2?'place-2':r.place===3?'place-3':'place-other';
-      html+=`<div class="search-result-card"><div class="search-result-name">${escHtml(r.name)}</div><div class="search-result-row">🏆 ${escHtml(r.compName)}</div><div class="search-result-row">⚖️ ${escHtml(r.group)} · До ${escHtml(r.weight)} кг</div><div class="search-result-row">📍 ${escHtml(r.region)}${r.team?' · '+escHtml(r.team):''}</div><div class="search-result-row" style="margin-top:6px;">${pn?`<span class="search-result-place ${pc}">${pn}</span> место`:'<span style="color:var(--muted)">Место не определено</span>'}${r.razryad?' · '+escHtml(r.razryad):''}</div></div>`;
+    let html = `<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Найдено: ${results.length}</div>`;
+    results.forEach(r => {
+      const pn = r.place>=500?null:r.place;
+      const pc = r.place===1?'place-1':r.place===2?'place-2':r.place===3?'place-3':'place-other';
+      html += `<div class="search-result-card"><div class="search-result-name">${escHtml(r.name)}</div><div class="search-result-row">🏆 ${escHtml(r.compName)}</div><div class="search-result-row">⚖️ ${escHtml(r.group)} · До ${escHtml(r.weight)} кг</div><div class="search-result-row">📍 ${escHtml(r.region)}${r.team?' · '+escHtml(r.team):''}</div><div class="search-result-row" style="margin-top:6px;">${pn?`<span class="splace ${pc}">${pn}</span> место`:'<span style="color:var(--muted)">Место не определено</span>'}${r.razryad?' · '+escHtml(r.razryad):''}</div></div>`;
     });
-    el.innerHTML=html;
-  } catch(e){progress.style.display='none';el.innerHTML=errBox('Ошибка поиска.<br>'+e.message);}
+    el.innerHTML = html;
+  } catch(e) { progress.style.display='none'; el.innerHTML=errBox('Ошибка поиска.<br>'+e.message); }
 }
 
 // ── S8: Rating ──
@@ -534,8 +512,36 @@ function setGender(g) {
 
 function setAgeTab(age) {
   state.ratingAge = age;
-  document.querySelectorAll('.age-tab').forEach(t => t.classList.toggle('active', t.dataset.age === String(age)));
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.toggle('active', t.dataset.age === String(age)));
   renderRating();
+}
+
+function getAgeGroup(comp) {
+  // 1. Try to extract from tournament name: "до 19 лет", "до 17 лет" etc
+  const name = comp.co_name || '';
+  const match = name.match(/до\s*(\d+)\s*лет/i);
+  if (match) return parseInt(match[1]);
+
+  // 2. Try "мужчин" / "женщин" -> 99 (adults)
+  if (/мужчин|женщин|взрослых/i.test(name)) return 99;
+
+  // 3. Fallback: use co_age_off (youngest birth year = oldest athlete)
+  const ageOff = parseInt(comp.co_age_off) || 0;
+  if (ageOff > 0) {
+    const maxAge = new Date().getFullYear() - ageOff;
+    if (maxAge <= 13) return 13;
+    if (maxAge <= 15) return 15;
+    if (maxAge <= 17) return 17;
+    if (maxAge <= 19) return 19;
+    if (maxAge <= 22) return 22;
+    return 99;
+  }
+  return 99;
+}
+
+function ageGroupLabel(ag) {
+  if (ag === 99) return 'Взрослые';
+  return `До ${ag} лет`;
 }
 
 async function loadRatingData() {
@@ -543,81 +549,56 @@ async function loadRatingData() {
   const progress = document.getElementById('rating-progress');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
   progress.style.display = 'block'; progress.textContent = 'Загрузка данных…';
-
   try {
     const compsResp = await apiFetch('/api/competitions');
     const comps = Array.isArray(compsResp) ? compsResp : (compsResp.data || []);
 
-    // collect all athletes with age group info
-    // age group determined by co_age_on (birth year from)
     const catTasks = comps.map(async comp => {
       try {
         const r = await apiFetch(`/api/competitions/${comp.co_id||comp.id}`);
         const wc = r.data?.weight_categories || {};
         const cats = [];
         for (const [gn, cm] of Object.entries(wc)) for (const [catId, cat] of Object.entries(cm)) cats.push({catId, weight: cat.w_weight, group: gn, w_sex: cat.w_sex});
-        return {comp, cats};
-      } catch { return {comp, cats:[]}; }
+        return {comp, cats, ageGroup: getAgeGroup(comp)};
+      } catch { return {comp, cats:[], ageGroup: 99}; }
     });
     const compCats = await Promise.all(catTasks);
     const total = compCats.reduce((s,c)=>s+c.cats.length, 0);
     progress.textContent = `Обработка ${total} категорий…`;
 
-    // map: athleteKey -> { name, region, points, gold, silver, bronze, ageGroup, gender }
     const athletes = {};
     let done = 0;
-
-    const athleteTasks = compCats.flatMap(({comp, cats}) => cats.map(async ({catId, weight, group, w_sex}) => {
+    const athleteTasks = compCats.flatMap(({comp, cats, ageGroup}) => cats.map(async ({catId, group, w_sex}) => {
       try {
         const r = await apiFetch(`/api/competitions/${comp.co_id||comp.id}/categories/${catId}/athletes`);
         const list = r.data?.athletes || [];
-
-        // determine age group from tournament
-        const ageOff = parseInt(comp.co_age_off) || 0;
-        const ageOn = parseInt(comp.co_age_on) || 0;
-        // age group = max age = current year - min birth year
-        const currentYear = new Date().getFullYear();
-        const maxAge = ageOff ? currentYear - ageOff : 0;
-        let ageGroup = null;
-        if (maxAge <= 13) ageGroup = 13;
-        else if (maxAge <= 15) ageGroup = 15;
-        else if (maxAge <= 17) ageGroup = 17;
-        else if (maxAge <= 19) ageGroup = 19;
-        else ageGroup = 19;
-
-        // gender from category
         const isFemale = /дев|жен|women|girl/i.test(group) || w_sex === '6';
         const gender = isFemale ? 'female' : 'male';
-
         list.forEach(a => {
           const place = parseInt(a.za_place);
-          if (place >= 500) return; // no place assigned
-          const fio = a.us_fio || [a.us_family, a.us_name, a.us_otch].filter(Boolean).join(' ');
-          const key = `${fio}_${gender}`;
-          if (!athletes[key]) {
-            athletes[key] = { name: fio, region: a.us_region_x||'', team: a.us_team_x||'', points: 0, gold: 0, silver: 0, bronze: 0, ageGroup, gender };
-          }
+          if (place >= 500) return;
+          const fio = a.us_fio || [a.us_family,a.us_name,a.us_otch].filter(Boolean).join(' ');
+          if (!fio.trim()) return;
+          const key = `${fio}__${gender}`;
+          if (!athletes[key]) athletes[key] = {name:fio, region:a.us_region_x||'', team:a.us_team_x||'', points:0, gold:0, silver:0, bronze:0, ageGroup, gender};
           athletes[key].points += getPoints(place);
-          if (place === 1) athletes[key].gold++;
-          else if (place === 2) athletes[key].silver++;
-          else if (place === 3) athletes[key].bronze++;
+          if (place===1) athletes[key].gold++;
+          else if (place===2) athletes[key].silver++;
+          else if (place===3) athletes[key].bronze++;
         });
       } catch {}
       done++; if(done%5===0) progress.textContent=`Обработано ${done} из ${total}…`;
     }));
-
     await Promise.all(athleteTasks);
     progress.style.display = 'none';
 
-    // collect age groups
-    const ageGroups = [...new Set(Object.values(athletes).map(a => a.ageGroup))].filter(Boolean).sort((a,b)=>a-b);
+    const ageGroups = [...new Set(Object.values(athletes).map(a=>a.ageGroup))].filter(Boolean).sort((a,b)=>a-b);
     state.ratingData = athletes;
     state.ratingAge = ageGroups[0] || 19;
 
-    // render age tabs
     const tabsEl = document.getElementById('age-tabs');
     tabsEl.innerHTML = ageGroups.map(ag =>
-      `<button class="age-tab ${ag === state.ratingAge ? 'active' : ''}" data-age="${ag}" onclick="setAgeTab(${ag})">До ${ag} лет</button>`
+      `<button class="tab-btn ${ag===state.ratingAge?'active':''}" data-age="${ag}" onclick="setAgeTab(${ag})">${ageGroupLabel(ag)}</button>`
     ).join('');
 
     renderRating();
@@ -630,28 +611,21 @@ async function loadRatingData() {
 function renderRating() {
   const el = document.getElementById('s8-content');
   if (!state.ratingData) return;
-
   const filtered = Object.values(state.ratingData)
     .filter(a => a.gender === state.ratingGender && a.ageGroup === state.ratingAge)
-    .sort((a, b) => b.points - a.points || b.gold - a.gold || b.silver - a.silver);
-
+    .sort((a,b) => b.points-a.points || b.gold-a.gold || b.silver-a.silver);
   if (!filtered.length) { el.innerHTML = emptyBox('Нет данных для этой группы'); return; }
-
   let html = '';
-  filtered.slice(0, 50).forEach((a, i) => {
-    const rank = i + 1;
-    const rankClass = rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
-    const medals = [
-      a.gold ? `🥇${a.gold}` : '',
-      a.silver ? `🥈${a.silver}` : '',
-      a.bronze ? `🥉${a.bronze}` : ''
-    ].filter(Boolean).join(' ');
+  filtered.slice(0,50).forEach((a, i) => {
+    const rank = i+1;
+    const rc = rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+    const medals = [a.gold?`🥇${a.gold}`:'', a.silver?`🥈${a.silver}`:'', a.bronze?`🥉${a.bronze}`:''].filter(Boolean).join(' ');
     html += `<div class="rating-row">
-      <div class="rating-rank ${rankClass}">${rank}</div>
+      <div class="rating-rank ${rc}">${rank}</div>
       <div class="rating-info">
         <div class="rating-name">${escHtml(a.name)}</div>
         <div class="rating-meta">${escHtml(a.region)}${a.team?' · '+escHtml(a.team):''}</div>
-        ${medals ? `<div class="rating-medals">${medals}</div>` : ''}
+        ${medals?`<div class="rating-medals">${medals}</div>`:''}
       </div>
       <div class="rating-score">
         <div class="rating-pts">${a.points}</div>
