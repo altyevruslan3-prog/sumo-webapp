@@ -18,6 +18,7 @@
   #back-btn { display: none; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--card2); color: var(--text); font-size: 20px; cursor: pointer; flex-shrink: 0; }
   #back-btn.visible { display: flex; }
   .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; color: var(--accent); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .header-search-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--card2); color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .screens { margin-top: var(--header-h); }
   .screen { display: none; min-height: calc(100dvh - var(--header-h)); padding: 16px; animation: fadeIn .22s ease; }
   .screen.active { display: block; }
@@ -85,80 +86,51 @@
   .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
   .breadcrumb span { color: var(--text); font-weight: 600; }
 
+  /* ── SEARCH ── */
+  .search-box { display: flex; gap: 10px; margin-bottom: 16px; }
+  .search-input {
+    flex: 1; padding: 12px 16px; background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-size: 15px; font-family: inherit;
+    outline: none; transition: border-color .15s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+  .search-btn {
+    padding: 12px 18px; background: var(--accent); border: none; border-radius: var(--radius);
+    color: #0e0e12; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: opacity .15s;
+  }
+  .search-btn:active { opacity: .8; }
+  .search-progress { font-size: 12px; color: var(--muted); margin-bottom: 12px; display: none; }
+  .search-result-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 16px; margin-bottom: 10px;
+  }
+  .search-result-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .search-result-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .search-result-place { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 700; font-size: 11px; margin-right: 4px; }
+
   /* ── BRACKET ── */
   #s6 { padding: 0; }
   #s6 .breadcrumb { padding: 16px 16px 0; margin-bottom: 8px; }
   #s6 .screen-label { padding: 0 16px; }
   .bracket-scroll { overflow-x: auto; overflow-y: auto; padding: 16px; padding-bottom: 32px; }
   .bracket-wrap { display: flex; gap: 0; align-items: flex-start; min-width: max-content; }
-  .bracket-round { display: flex; flex-direction: column; min-width: 160px; margin-right: 32px; position: relative; }
+  .bracket-round { display: flex; flex-direction: column; min-width: 160px; margin-right: 32px; }
   .bracket-round:last-child { margin-right: 0; }
-  .bracket-round-title {
-    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 8px; text-align: center; white-space: nowrap;
-  }
+  .bracket-round-title { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; text-align: center; white-space: nowrap; }
   .bracket-matches { display: flex; flex-direction: column; }
-  .bracket-match-wrap { display: flex; align-items: center; position: relative; }
-  .bracket-match {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    width: 160px;
-    flex-shrink: 0;
-  }
-  .bracket-player {
-    padding: 7px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.3;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 38px;
-    transition: background .15s;
-  }
+  .bracket-match { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; width: 160px; margin-bottom: 8px; }
+  .bracket-player { padding: 7px 10px; font-size: 11px; font-weight: 600; line-height: 1.3; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; min-height: 38px; }
   .bracket-player:last-child { border-bottom: none; }
-  .bracket-player.winner {
-    background: rgba(245,200,66,.08);
-    color: var(--accent);
-  }
+  .bracket-player.winner { background: rgba(245,200,66,.08); color: var(--accent); }
   .bracket-player.loser { color: var(--muted); }
   .bracket-player.bye { color: var(--muted); font-style: italic; font-weight: 400; }
-  .bracket-player .seed {
-    font-size: 9px; font-weight: 700; color: var(--muted);
-    background: var(--card2); border-radius: 4px; padding: 1px 4px;
-    flex-shrink: 0;
-  }
+  .bracket-player .seed { font-size: 9px; font-weight: 700; color: var(--muted); background: var(--card2); border-radius: 4px; padding: 1px 4px; flex-shrink: 0; }
   .bracket-player.winner .seed { background: rgba(245,200,66,.15); color: var(--accent); }
   .bracket-player .pname { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .bracket-player .trophy { font-size: 10px; flex-shrink: 0; }
-
-  /* connector lines */
-  .bracket-connector {
-    position: absolute;
-    right: -32px;
-    width: 32px;
-    pointer-events: none;
-  }
-
-  .bracket-spacer { flex: 1; }
-
-  /* winner box */
-  .bracket-winner-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 140px;
-    padding: 16px 12px;
-    background: rgba(245,200,66,.06);
-    border: 1px solid rgba(245,200,66,.3);
-    border-radius: var(--radius);
-    text-align: center;
-    margin-left: 16px;
-  }
+  .bracket-winner-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 140px; padding: 16px 12px; background: rgba(245,200,66,.06); border: 1px solid rgba(245,200,66,.3); border-radius: var(--radius); text-align: center; margin-left: 16px; }
   .bracket-winner-box .trophy-big { font-size: 28px; margin-bottom: 6px; }
   .bracket-winner-box .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
   .bracket-winner-box .name { font-size: 13px; font-weight: 700; color: var(--accent); }
@@ -170,18 +142,24 @@
 <header>
   <button id="back-btn" aria-label="Назад">←</button>
   <div class="header-title" id="header-title">🥋 SUMO SPORT</div>
+  <button class="header-search-btn" id="search-header-btn" onclick="goSearch()" title="Поиск спортсмена">🔍</button>
 </header>
 
 <div class="screens">
+  <!-- S1: Tournaments -->
   <div class="screen active" id="s1">
     <div class="screen-label">Турниры</div>
     <div id="s1-content"><div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка…</div></div></div>
   </div>
+
+  <!-- S2: Categories -->
   <div class="screen" id="s2">
     <div id="s2-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Категории</div>
     <div id="s2-content"></div>
   </div>
+
+  <!-- S3: Choose -->
   <div class="screen" id="s3">
     <div id="s3-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Что смотрим?</div>
@@ -200,20 +178,37 @@
       </button>
     </div>
   </div>
+
+  <!-- S4: Athletes -->
   <div class="screen" id="s4">
     <div id="s4-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Участники</div>
     <div id="s4-content"></div>
   </div>
+
+  <!-- S5: Fights -->
   <div class="screen" id="s5">
     <div id="s5-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label">Ход встреч</div>
     <div id="s5-content"></div>
   </div>
+
+  <!-- S6: Bracket -->
   <div class="screen" id="s6">
     <div id="s6-breadcrumb" class="breadcrumb"></div>
     <div class="screen-label" style="padding:0 16px">Шахматка</div>
     <div id="s6-content"></div>
+  </div>
+
+  <!-- S7: Search -->
+  <div class="screen" id="s7">
+    <div class="screen-label">Поиск спортсмена</div>
+    <div class="search-box">
+      <input class="search-input" id="search-input" type="text" placeholder="Введите фамилию…" />
+      <button class="search-btn" onclick="doSearch()">Найти</button>
+    </div>
+    <div class="search-progress" id="search-progress"></div>
+    <div id="s7-content"></div>
   </div>
 </div>
 
@@ -233,12 +228,15 @@ function navigate(screenId, title) {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  const isS1 = id === 's1';
   document.getElementById('back-btn').classList.toggle('visible', state.history.length > 0);
+  document.getElementById('search-header-btn').style.display = isS1 ? 'flex' : 'none';
 }
 document.getElementById('back-btn').onclick = () => {
   if (!state.history.length) return;
   const prev = state.history.pop();
   document.getElementById('back-btn').classList.toggle('visible', state.history.length > 0);
+  document.getElementById('search-header-btn').style.display = prev === 's1' ? 'flex' : 'none';
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(prev).classList.add('active');
   const titles = { s1: '🥋 SUMO SPORT', s2: state.compName, s3: state.catName };
@@ -253,20 +251,20 @@ async function apiFetch(path) {
 function errBox(msg) { return `<div class="error-box"><div class="ico">⚠️</div><p>${msg}</p></div>`; }
 function emptyBox(msg) { return `<div class="empty-box"><div class="ico">🔍</div><p>${msg}</p></div>`; }
 
-// ── SCREEN 1 ──
+// ── S1: Tournaments ──
 async function loadTournaments() {
   const el = document.getElementById('s1-content');
   el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Загрузка турниров…</div></div>';
   try {
     const resp = await apiFetch('/api/competitions');
-    const list = Array.isArray(resp) ? resp : (resp.data || resp.results || []);
+    const list = Array.isArray(resp) ? resp : (resp.data || []);
     if (!list.length) { el.innerHTML = emptyBox('Турниры не найдены'); return; }
     el.innerHTML = '<div class="card-list">' + list.map(c => {
       const id = c.co_id || c.id;
       const name = c.co_name || c.name || `Турнир #${id}`;
-      const dateOn = c.co_data_on || c.date_start || '';
-      const dateOff = c.co_data_off || c.date_end || '';
-      const city = c.co_city || c.location || '';
+      const dateOn = c.co_data_on || '';
+      const dateOff = c.co_data_off || '';
+      const city = c.co_city || '';
       const dateStr = dateOn && dateOff ? `${dateOn} — ${dateOff}` : (dateOn || dateOff);
       return `<div class="card" onclick="openTournament(${id}, this.dataset.name)" data-name="${escHtml(name)}">
         <div class="card-title">${escHtml(name)}</div>
@@ -286,7 +284,7 @@ function openTournament(id, name) {
   loadCategories(id);
 }
 
-// ── SCREEN 2 ──
+// ── S2: Categories ──
 async function loadCategories(compId) {
   const el = document.getElementById('s2-content');
   document.getElementById('s2-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span>`;
@@ -332,12 +330,12 @@ function openCategory(id, name) {
   document.getElementById('s3-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(name)}`;
 }
 
-// ── SCREEN 3 ──
+// ── S3 ──
 function goAthletes() { navigate('s4', 'Участники'); loadAthletes(); }
 function goFights() { navigate('s5', 'Ход встреч'); loadFights(); }
 function goBracket() { navigate('s6', 'Шахматка'); loadBracket(); }
 
-// ── SCREEN 4 ──
+// ── S4: Athletes ──
 async function loadAthletes() {
   const el = document.getElementById('s4-content');
   document.getElementById('s4-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -367,7 +365,7 @@ async function loadAthletes() {
   }
 }
 
-// ── SCREEN 5 ──
+// ── S5: Fights ──
 async function loadFights() {
   const el = document.getElementById('s5-content');
   document.getElementById('s5-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -417,7 +415,7 @@ async function loadFights() {
   }
 }
 
-// ── SCREEN 6: BRACKET ──
+// ── S6: Bracket ──
 async function loadBracket() {
   const el = document.getElementById('s6-content');
   document.getElementById('s6-breadcrumb').innerHTML = `🏆 <span>${escHtml(state.compName)}</span> › ${escHtml(state.catName)}`;
@@ -426,129 +424,195 @@ async function loadBracket() {
     const resp = await apiFetch(`/api/competitions/${state.compId}/categories/${state.catId}/hod`);
     const hod = resp.data?.hod || {};
     const roundKeys = Object.keys(hod);
-    if (!roundKeys.length) { el.innerHTML = emptyBox('Данные не найдены'); return; }
+    if (!roundKeys.length) { el.innerHTML = emptyBox('Данные шахматки не найдены'); return; }
 
-    // filter only main rounds (exclude утешение)
     const mainRounds = roundKeys.filter(k => !k.toLowerCase().includes('утеш'));
     const consolationRounds = roundKeys.filter(k => k.toLowerCase().includes('утеш'));
 
     function getName(p) {
       if (!p || p === 'NO') return null;
-      const fio = p.us_fio || [p.us_family, p.us_name].filter(Boolean).join(' ');
-      return fio || null;
-    }
-    function getSeed(p) {
-      return p ? p.za_draw : null;
-    }
-    function getRegion(p) {
-      return p ? (p.us_region_x || '') : '';
+      return p.us_fio || [p.us_family, p.us_name].filter(Boolean).join(' ') || null;
     }
     function isWinner(p, other) {
       if (!p || p === 'NO' || !other || other === 'NO') return false;
-      const pp = parseInt(p.za_place);
-      const op = parseInt(other.za_place);
+      const pp = parseInt(p.za_place), op = parseInt(other.za_place);
       return pp < op && pp < 500;
     }
 
     function renderRound(roundName, fights) {
-      let html = `<div class="bracket-round">`;
-      html += `<div class="bracket-round-title">${escHtml(roundName)}</div>`;
-      html += `<div class="bracket-matches">`;
-
-      fights.forEach((fight) => {
+      let html = `<div class="bracket-round"><div class="bracket-round-title">${escHtml(roundName)}</div><div class="bracket-matches">`;
+      fights.forEach(fight => {
         const left = fight.left && fight.left !== 'NO' ? fight.left : null;
         const right = fight.right && fight.right !== 'NO' ? fight.right : null;
         const leftName = getName(left);
         const rightName = getName(right);
         const leftWins = left && right && isWinner(left, right);
         const rightWins = left && right && isWinner(right, left);
-
-        html += `<div class="bracket-match-wrap" style="margin-bottom:8px;">`;
         html += `<div class="bracket-match">`;
-
-        // left player
         if (leftName) {
-          html += `<div class="bracket-player ${leftWins ? 'winner' : right ? 'loser' : ''}">
-            <span class="seed">${getSeed(left) || ''}</span>
-            <span class="pname" title="${escHtml(leftName)}">${escHtml(leftName)}</span>
-            ${leftWins ? '<span class="trophy">🏆</span>' : ''}
-          </div>`;
+          html += `<div class="bracket-player ${leftWins ? 'winner' : right ? 'loser' : ''}"><span class="seed">${left.za_draw||''}</span><span class="pname" title="${escHtml(leftName)}">${escHtml(leftName)}</span>${leftWins?'<span class="trophy">🏆</span>':''}</div>`;
         } else {
           html += `<div class="bracket-player bye"><span class="pname">—</span></div>`;
         }
-
-        // right player
         if (rightName) {
-          html += `<div class="bracket-player ${rightWins ? 'winner' : left ? 'loser' : ''}">
-            <span class="seed">${getSeed(right) || ''}</span>
-            <span class="pname" title="${escHtml(rightName)}">${escHtml(rightName)}</span>
-            ${rightWins ? '<span class="trophy">🏆</span>' : ''}
-          </div>`;
+          html += `<div class="bracket-player ${rightWins ? 'winner' : left ? 'loser' : ''}"><span class="seed">${right.za_draw||''}</span><span class="pname" title="${escHtml(rightName)}">${escHtml(rightName)}</span>${rightWins?'<span class="trophy">🏆</span>':''}</div>`;
         } else {
           html += `<div class="bracket-player bye"><span class="pname">BYE</span></div>`;
         }
-
-        html += `</div>`; // bracket-match
-        html += `</div>`; // bracket-match-wrap
+        html += `</div>`;
       });
-
-      html += `</div></div>`;
-      return html;
+      return html + '</div></div>';
     }
 
-    // find overall winner
-    let overallWinner = null;
-    let overallRegion = '';
-    const finalRound = roundKeys.find(k => k.toLowerCase() === 'финал') || roundKeys[roundKeys.length - 1];
-    if (finalRound && hod[finalRound]) {
-      const finalFights = Array.isArray(hod[finalRound]) ? hod[finalRound] : Object.values(hod[finalRound]);
-      if (finalFights.length > 0) {
-        const f = finalFights[0];
-        const left = f.left && f.left !== 'NO' ? f.left : null;
-        const right = f.right && f.right !== 'NO' ? f.right : null;
-        if (left && right) {
-          if (isWinner(left, right)) { overallWinner = getName(left); overallRegion = getRegion(left); }
-          else if (isWinner(right, left)) { overallWinner = getName(right); overallRegion = getRegion(right); }
+    // find winner
+    let overallWinner = null, overallRegion = '';
+    const finalKey = roundKeys.find(k => k.toLowerCase() === 'финал') || roundKeys[mainRounds.length - 1];
+    if (finalKey && hod[finalKey]) {
+      const ff = Array.isArray(hod[finalKey]) ? hod[finalKey] : Object.values(hod[finalKey]);
+      if (ff[0]) {
+        const l = ff[0].left && ff[0].left !== 'NO' ? ff[0].left : null;
+        const r = ff[0].right && ff[0].right !== 'NO' ? ff[0].right : null;
+        if (l && r) {
+          if (isWinner(l, r)) { overallWinner = getName(l); overallRegion = l.us_region_x || ''; }
+          else if (isWinner(r, l)) { overallWinner = getName(r); overallRegion = r.us_region_x || ''; }
         }
       }
     }
 
     let html = '<div class="bracket-scroll"><div class="bracket-wrap">';
-
-    mainRounds.forEach(roundName => {
-      const roundData = hod[roundName];
-      const fights = Array.isArray(roundData) ? roundData : Object.values(roundData);
-      html += renderRound(roundName, fights);
+    mainRounds.forEach(rk => {
+      const rd = hod[rk];
+      html += renderRound(rk, Array.isArray(rd) ? rd : Object.values(rd));
     });
-
-    // winner box
     if (overallWinner) {
-      html += `<div class="bracket-winner-box">
-        <div class="trophy-big">🥇</div>
-        <div class="label">Победитель</div>
-        <div class="name">${escHtml(overallWinner)}</div>
-        <div class="region">${escHtml(overallRegion)}</div>
-      </div>`;
+      html += `<div class="bracket-winner-box"><div class="trophy-big">🥇</div><div class="label">Победитель</div><div class="name">${escHtml(overallWinner)}</div><div class="region">${escHtml(overallRegion)}</div></div>`;
     }
-
     html += '</div>';
-
-    // consolation bracket
-    if (consolationRounds.length > 0) {
-      html += `<div style="padding:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Утешительные встречи</div>`;
-      html += '<div class="bracket-wrap">';
-      consolationRounds.forEach(roundName => {
-        const roundData = hod[roundName];
-        const fights = Array.isArray(roundData) ? roundData : Object.values(roundData);
-        html += renderRound(roundName, fights);
+    if (consolationRounds.length) {
+      html += `<div style="padding:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Утешительные встречи</div><div class="bracket-wrap">`;
+      consolationRounds.forEach(rk => {
+        const rd = hod[rk];
+        html += renderRound(rk, Array.isArray(rd) ? rd : Object.values(rd));
       });
       html += '</div>';
     }
-
     html += '</div>';
     el.innerHTML = html;
   } catch(e) {
     el.innerHTML = errBox('Не удалось загрузить шахматку.<br>' + e.message);
+  }
+}
+
+// ── S7: Search ──
+function goSearch() {
+  navigate('s7', '🔍 Поиск');
+  document.getElementById('search-input').value = '';
+  document.getElementById('s7-content').innerHTML = '';
+  document.getElementById('search-progress').style.display = 'none';
+  setTimeout(() => document.getElementById('search-input').focus(), 300);
+}
+
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+async function doSearch() {
+  const query = document.getElementById('search-input').value.trim();
+  if (query.length < 2) {
+    document.getElementById('s7-content').innerHTML = emptyBox('Введите минимум 2 буквы');
+    return;
+  }
+
+  const el = document.getElementById('s7-content');
+  const progress = document.getElementById('search-progress');
+  el.innerHTML = '<div class="loader-wrap"><div class="spinner"></div></div>';
+  progress.style.display = 'block';
+  progress.textContent = 'Загрузка турниров…';
+
+  try {
+    const compsResp = await apiFetch('/api/competitions');
+    const comps = Array.isArray(compsResp) ? compsResp : (compsResp.data || []);
+    const results = [];
+    let total = 0, done = 0;
+
+    // get all categories for all competitions
+    const catTasks = comps.map(async comp => {
+      try {
+        const r = await apiFetch(`/api/competitions/${comp.co_id || comp.id}`);
+        const weightCats = r.data?.weight_categories || {};
+        const cats = [];
+        for (const [groupName, catMap] of Object.entries(weightCats)) {
+          for (const [catId, cat] of Object.entries(catMap)) {
+            cats.push({ catId, weight: cat.w_weight, group: groupName });
+          }
+        }
+        return { comp, cats };
+      } catch { return { comp, cats: [] }; }
+    });
+
+    const compCats = await Promise.all(catTasks);
+    total = compCats.reduce((s, c) => s + c.cats.length, 0);
+    progress.textContent = `Поиск в ${total} категориях…`;
+
+    // search in all categories
+    const athleteTasks = compCats.flatMap(({ comp, cats }) =>
+      cats.map(async ({ catId, weight, group }) => {
+        try {
+          const r = await apiFetch(`/api/competitions/${comp.co_id || comp.id}/categories/${catId}/athletes`);
+          const athletes = r.data?.athletes || [];
+          const q = query.toLowerCase();
+          athletes.forEach(a => {
+            const fio = (a.us_fio || [a.us_family, a.us_name, a.us_otch].filter(Boolean).join(' ')).toLowerCase();
+            if (fio.includes(q)) {
+              results.push({
+                name: a.us_fio || [a.us_family, a.us_name, a.us_otch].filter(Boolean).join(' '),
+                region: a.us_region_x || '—',
+                team: a.us_team_x || '',
+                place: parseInt(a.za_place),
+                compName: comp.co_name || comp.name,
+                weight,
+                group,
+                razryad: a.us_razryad_x || ''
+              });
+            }
+          });
+        } catch {}
+        done++;
+        if (done % 5 === 0) progress.textContent = `Проверено ${done} из ${total} категорий…`;
+      })
+    );
+
+    await Promise.all(athleteTasks);
+    progress.style.display = 'none';
+
+    if (!results.length) {
+      el.innerHTML = emptyBox(`По запросу «${escHtml(query)}» ничего не найдено`);
+      return;
+    }
+
+    // sort by place
+    results.sort((a, b) => (a.place < 500 ? a.place : 999) - (b.place < 500 ? b.place : 999));
+
+    let html = `<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Найдено: ${results.length}</div>`;
+    results.forEach(r => {
+      const place = r.place;
+      const placeNum = place >= 500 ? null : place;
+      const pClass = place === 1 ? 'place-1' : place === 2 ? 'place-2' : place === 3 ? 'place-3' : 'place-other';
+      html += `<div class="search-result-card">
+        <div class="search-result-name">${escHtml(r.name)}</div>
+        <div class="search-result-row">🏆 ${escHtml(r.compName)}</div>
+        <div class="search-result-row">⚖️ ${escHtml(r.group)} · До ${escHtml(r.weight)} кг</div>
+        <div class="search-result-row">📍 ${escHtml(r.region)}${r.team ? ' · ' + escHtml(r.team) : ''}</div>
+        <div class="search-result-row" style="margin-top:6px;">
+          ${placeNum ? `<span class="search-result-place ${pClass}">${placeNum}</span> место` : '<span style="color:var(--muted)">Место не определено</span>'}
+          ${r.razryad ? ` · ${escHtml(r.razryad)}` : ''}
+        </div>
+      </div>`;
+    });
+    el.innerHTML = html;
+  } catch(e) {
+    progress.style.display = 'none';
+    el.innerHTML = errBox('Ошибка поиска.<br>' + e.message);
   }
 }
 
